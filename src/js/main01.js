@@ -133,5 +133,3 @@ const haushaltsbuch = {
 haushaltsbuch.eintrag_hinzufuegen();
 // haushaltsbuch.eintrag_hinzufuegen();
 // haushaltsbuch.eintrag_hinzufuegen();
-
-// Test
