@@ -6,9 +6,9 @@
 // let einnahmen = 0,
 //     ausgaben = 0,
 //     bilanz = 0,
-//     titel, 
-//     typ, 
-//     betrag, 
+//     titel,
+//     typ,
+//     betrag,
 //     datum;
 
 // // Funktion 01:Eingabedaten holen
@@ -35,7 +35,7 @@
 //     bilanz = bilanz + betrag;
 // } else if (typ === "Ausgabe"){
 //     ausgaben = ausgaben + betrag;
-//     bilanz = bilanz - betrag; 
+//     bilanz = bilanz - betrag;
 // } else {
 //     console.log(`Der Typ "${typ}" ist nicht bekannt.`);
 //     }
@@ -133,3 +133,5 @@ const haushaltsbuch = {
 haushaltsbuch.eintrag_hinzufuegen();
 // haushaltsbuch.eintrag_hinzufuegen();
 // haushaltsbuch.eintrag_hinzufuegen();
+
+// Test
