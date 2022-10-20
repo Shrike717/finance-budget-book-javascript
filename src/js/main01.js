@@ -135,7 +135,85 @@
 // // haushaltsbuch.eintrag_hinzufuegen();
 
 
-// NEUER  CODE NACH HINZUFÜGUNG VON SWITCHES PRAXIS 6
+// // NEUER  CODE NACH HINZUFÜGUNG VON SWITCHES PRAXIS 6
+
+// // Objekt haushaltsbuch anlegen
+// const haushaltsbuch = {
+
+//   gesamtbilanz: {
+//       einnahmen: 0,
+//       ausgaben: 0,
+//       bilanz: 0,
+//   },
+
+//   neuer_eintrag: {
+//       titel: null,
+//       typ: null,
+//       betrag: null,
+//       datum: null
+//   },
+
+//   // Method 01:Eingabedaten holen
+//   eintrag_erfassen() {
+//       this.neuer_eintrag.titel = prompt ("Titel:");
+//       this.neuer_eintrag.typ = prompt ("Typ (Einnahme oder Ausgabe):");
+//       this.neuer_eintrag.betrag = parseInt(prompt ("Betrag (in Cent):"));
+//       this.neuer_eintrag.datum = prompt ("Datum (jjjj-mm-tt):");
+//   },
+
+//   // Method 02:Eingabedaten ausgeben
+//   eintrag_ausgeben() {
+//       console.log(`Titel: ${this.neuer_eintrag.titel}
+//   Typ: ${this.neuer_eintrag.typ }
+//   Betrag: ${this.neuer_eintrag.betrag} ct
+//   Datum: ${this.neuer_eintrag.datum }`
+//       );
+//   },
+
+
+// // Method 03:Einträge in Einnahmen, Ausgaben und Gesamtbelanz verrechnen
+//   eintrag_mit_gesamtbilanz_verrechnen() {
+
+//     switch (this.neuer_eintrag.typ) {
+//       case "Einnahme":
+//           this.gesamtbilanz.einnahmen += this.neuer_eintrag.betrag;
+//           this.gesamtbilanz.bilanz += this.neuer_eintrag.betrag;
+//           break;
+//       case "Ausgabe":
+//           this.gesamtbilanz.ausgaben += this.neuer_eintrag.betrag;
+//           this.gesamtbilanz.bilanz -= this.neuer_eintrag.betrag;
+//           break;
+//       default:
+//           console.log(`Der Typ "${this.neuer_eintrag.typ}" ist nicht bekannt.`);
+//           break;
+//     }
+//   },
+
+
+//   // Method 04:Gesamtbilanz ausgeben
+//   gesamtbilanz_ausgeben() {
+//       console.log(`Einnahmen:${this.gesamtbilanz.einnahmen} ct
+//   Ausgaben: ${this.gesamtbilanz.ausgaben} ct
+//   Bilanz: ${this.gesamtbilanz.bilanz} ct
+//   Bilanz ist positiv: ${this.gesamtbilanz.bilanz >= 0}`
+//       );
+//   },
+
+//   // Funktion 05:Alle Funktionsaufrufe zusammengefasst
+//   eintrag_hinzufuegen() {
+//       this.eintrag_erfassen();                                // Achtung! Hier auch mit .this referenzieren!
+//       this.eintrag_ausgeben();
+//       this.eintrag_mit_gesamtbilanz_verrechnen();
+//       this.gesamtbilanz_ausgeben();
+//   }
+// };
+
+// haushaltsbuch.eintrag_hinzufuegen();
+// haushaltsbuch.eintrag_hinzufuegen();
+// haushaltsbuch.eintrag_hinzufuegen();
+
+
+// NEUER  CODE NACH NACH ERSTELLUNG EINES ARRAYS FÜR EINTRÄGE PRAXIS 7
 
 // Objekt haushaltsbuch anlegen
 const haushaltsbuch = {
@@ -146,68 +224,70 @@ const haushaltsbuch = {
       bilanz: 0,
   },
 
-  neuer_eintrag: {
-      titel: null,
-      typ: null,
-      betrag: null,
-      datum: null
-  },
+  eintraege: [],
 
   // Method 01:Eingabedaten holen
   eintrag_erfassen() {
-      this.neuer_eintrag.titel = prompt ("Titel:");
-      this.neuer_eintrag.typ = prompt ("Typ (Einnahme oder Ausgabe):");
-      this.neuer_eintrag.betrag = parseInt(prompt ("Betrag (in Cent):"));
-      this.neuer_eintrag.datum = prompt ("Datum (jjjj-mm-tt):");
-  },
 
-  // Method 02:Eingabedaten ausgeben
-  eintrag_ausgeben() {
-      console.log(`Titel: ${this.neuer_eintrag.titel}
-  Typ: ${this.neuer_eintrag.typ }
-  Betrag: ${this.neuer_eintrag.betrag} ct
-  Datum: ${this.neuer_eintrag.datum }`
+      this.eintraege.push(
+          {
+              titel: prompt ("Titel:"),
+              typ: prompt ("Typ (Einnahme oder Ausgabe):"),
+              betrag: parseInt(prompt ("Betrag (in Cent):")),
+              datum: prompt ("Datum (jjjj-mm-tt):")
+          }
       );
   },
 
-
-// Method 03:Einträge in Einnahmen, Ausgaben und Gesamtbelanz verrechnen
-  eintrag_mit_gesamtbilanz_verrechnen() {
-
-    switch (this.neuer_eintrag.typ) {
-      case "Einnahme":
-          this.gesamtbilanz.einnahmen += this.neuer_eintrag.betrag;
-          this.gesamtbilanz.bilanz += this.neuer_eintrag.betrag;
-          break;
-      case "Ausgabe":
-          this.gesamtbilanz.ausgaben += this.neuer_eintrag.betrag;
-          this.gesamtbilanz.bilanz -= this.neuer_eintrag.betrag;
-          break;
-      default:
-          console.log(`Der Typ "${this.neuer_eintrag.typ}" ist nicht bekannt.`);
-          break;
-    }
-  },
+//   // Method 02:Eingabedaten ausgeben
+//   eintrag_ausgeben() {
+//       console.log(`Titel: ${this.neuer_eintrag.titel}
+//   Typ: ${this.neuer_eintrag.typ }
+//   Betrag: ${this.neuer_eintrag.betrag} ct
+//   Datum: ${this.neuer_eintrag.datum }`
+//       );
+//   },
 
 
-  // Method 04:Gesamtbilanz ausgeben
-  gesamtbilanz_ausgeben() {
-      console.log(`Einnahmen:${this.gesamtbilanz.einnahmen} ct
-  Ausgaben: ${this.gesamtbilanz.ausgaben} ct
-  Bilanz: ${this.gesamtbilanz.bilanz} ct
-  Bilanz ist positiv: ${this.gesamtbilanz.bilanz >= 0}`
-      );
-  },
+// // Method 03:Einträge in Einnahmen, Ausgaben und Gesamtbelanz verrechnen
+//   eintrag_mit_gesamtbilanz_verrechnen() {
+
+//     switch (this.neuer_eintrag.typ) {
+//       case "Einnahme":
+//           this.gesamtbilanz.einnahmen += this.neuer_eintrag.betrag;
+//           this.gesamtbilanz.bilanz += this.neuer_eintrag.betrag;
+//           break;
+//       case "Ausgabe":
+//           this.gesamtbilanz.ausgaben += this.neuer_eintrag.betrag;
+//           this.gesamtbilanz.bilanz -= this.neuer_eintrag.betrag;
+//           break;
+//       default:
+//           console.log(`Der Typ "${this.neuer_eintrag.typ}" ist nicht bekannt.`);
+//           break;
+//     }
+//   },
+
+
+//   // Method 04:Gesamtbilanz ausgeben
+//   gesamtbilanz_ausgeben() {
+//       console.log(`Einnahmen:${this.gesamtbilanz.einnahmen} ct
+//   Ausgaben: ${this.gesamtbilanz.ausgaben} ct
+//   Bilanz: ${this.gesamtbilanz.bilanz} ct
+//   Bilanz ist positiv: ${this.gesamtbilanz.bilanz >= 0}`
+//       );
+//   },
 
   // Funktion 05:Alle Funktionsaufrufe zusammengefasst
   eintrag_hinzufuegen() {
       this.eintrag_erfassen();                                // Achtung! Hier auch mit .this referenzieren!
-      this.eintrag_ausgeben();
-      this.eintrag_mit_gesamtbilanz_verrechnen();
-      this.gesamtbilanz_ausgeben();
+      // this.eintrag_ausgeben();
+      // this.eintrag_mit_gesamtbilanz_verrechnen();
+      // this.gesamtbilanz_ausgeben();
   }
 };
 
 haushaltsbuch.eintrag_hinzufuegen();
-haushaltsbuch.eintrag_hinzufuegen();
-haushaltsbuch.eintrag_hinzufuegen();
+// haushaltsbuch.eintrag_hinzufuegen();
+// haushaltsbuch.eintrag_hinzufuegen();
+
+console.log(haushaltsbuch);
