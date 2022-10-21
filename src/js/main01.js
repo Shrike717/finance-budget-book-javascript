@@ -296,6 +296,7 @@
 // NEUER  CODE NACH METHODEN WIEDERHERSTELLEN UND VERBEESSERN PRAXIS 8
 
 // Objekt haushaltsbuch anlegen
+
 const haushaltsbuch = {
 
   gesamtbilanz: {
@@ -331,24 +332,30 @@ const haushaltsbuch = {
       })
   },
 
-// // Method 03:Einträge in Einnahmen, Ausgaben und Gesamtbelanz verrechnen
-//   eintrag_mit_gesamtbilanz_verrechnen() {
-
-//     switch (this.neuer_eintrag.typ) {
-//       case "Einnahme":
-//           this.gesamtbilanz.einnahmen += this.neuer_eintrag.betrag;
-//           this.gesamtbilanz.bilanz += this.neuer_eintrag.betrag;
-//           break;
-//       case "Ausgabe":
-//           this.gesamtbilanz.ausgaben += this.neuer_eintrag.betrag;
-//           this.gesamtbilanz.bilanz -= this.neuer_eintrag.betrag;
-//           break;
-//       default:
-//           console.log(`Der Typ "${this.neuer_eintrag.typ}" ist nicht bekannt.`);
-//           break;
-//     }
-//   },
-
+  // Method 03: Gesamtbilanz erstellen:
+  gesamtbilanz_erstellen() {
+      let neue_gesamtbilanz = {
+          einnahmen: 0,
+          ausgaben: 0,
+          bilanz: 0,
+      };
+      this.eintraege.forEach(function (eintrag) {
+          switch (eintrag.typ) {
+              case "Einnahme":
+                  neue_gesamtbilanz.einnahmen += eintrag.betrag;
+                  neue_gesamtbilanz.bilanz += eintrag.betrag;
+                  break;
+              case "Ausgabe":
+                  neue_gesamtbilanz.ausgaben += eintrag.betrag;
+                  neue_gesamtbilanz.bilanz -= eintrag.betrag;
+                  break;
+              default:
+                  console.log(`Der Typ "${eintrag.typ}" ist nicht bekannt.`);
+                  break;
+            }
+      });
+      this.gesamtbilanz = neue_gesamtbilanz;
+  },
 
 //   // Method 04:Gesamtbilanz ausgeben
 //   gesamtbilanz_ausgeben() {
@@ -363,7 +370,7 @@ const haushaltsbuch = {
   eintrag_hinzufuegen() {
       this.eintrag_erfassen();                                // Achtung! Hier auch mit .this referenzieren!
       this.eintraege_ausgeben();
-      // this.eintrag_mit_gesamtbilanz_verrechnen();
+      this.gesamtbilanz_erstellen();
       // this.gesamtbilanz_ausgeben();
   }
 };
