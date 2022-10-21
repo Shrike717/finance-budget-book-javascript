@@ -215,6 +215,86 @@
 
 // NEUER  CODE NACH NACH ERSTELLUNG EINES ARRAYS FÜR EINTRÄGE PRAXIS 7
 
+// // Objekt haushaltsbuch anlegen
+// const haushaltsbuch = {
+
+//   gesamtbilanz: {
+//       einnahmen: 0,
+//       ausgaben: 0,
+//       bilanz: 0,
+//   },
+
+//   eintraege: [],
+
+//   // Method 01:Eingabedaten holen
+//   eintrag_erfassen() {
+
+//       this.eintraege.push(
+//           {
+//               titel: prompt ("Titel:"),
+//               typ: prompt ("Typ (Einnahme oder Ausgabe):"),
+//               betrag: parseInt(prompt ("Betrag (in Cent):")),
+//               datum: prompt ("Datum (jjjj-mm-tt):")
+//           }
+//       );
+//   },
+
+// //   // Method 02:Eingabedaten ausgeben
+// //   eintrag_ausgeben() {
+// //       console.log(`Titel: ${this.neuer_eintrag.titel}
+// //   Typ: ${this.neuer_eintrag.typ }
+// //   Betrag: ${this.neuer_eintrag.betrag} ct
+// //   Datum: ${this.neuer_eintrag.datum }`
+// //       );
+// //   },
+
+
+// // // Method 03:Einträge in Einnahmen, Ausgaben und Gesamtbelanz verrechnen
+// //   eintrag_mit_gesamtbilanz_verrechnen() {
+
+// //     switch (this.neuer_eintrag.typ) {
+// //       case "Einnahme":
+// //           this.gesamtbilanz.einnahmen += this.neuer_eintrag.betrag;
+// //           this.gesamtbilanz.bilanz += this.neuer_eintrag.betrag;
+// //           break;
+// //       case "Ausgabe":
+// //           this.gesamtbilanz.ausgaben += this.neuer_eintrag.betrag;
+// //           this.gesamtbilanz.bilanz -= this.neuer_eintrag.betrag;
+// //           break;
+// //       default:
+// //           console.log(`Der Typ "${this.neuer_eintrag.typ}" ist nicht bekannt.`);
+// //           break;
+// //     }
+// //   },
+
+
+// //   // Method 04:Gesamtbilanz ausgeben
+// //   gesamtbilanz_ausgeben() {
+// //       console.log(`Einnahmen:${this.gesamtbilanz.einnahmen} ct
+// //   Ausgaben: ${this.gesamtbilanz.ausgaben} ct
+// //   Bilanz: ${this.gesamtbilanz.bilanz} ct
+// //   Bilanz ist positiv: ${this.gesamtbilanz.bilanz >= 0}`
+// //       );
+// //   },
+
+//   // Funktion 05:Alle Funktionsaufrufe zusammengefasst
+//   eintrag_hinzufuegen() {
+//       this.eintrag_erfassen();                                // Achtung! Hier auch mit .this referenzieren!
+//       // this.eintrag_ausgeben();
+//       // this.eintrag_mit_gesamtbilanz_verrechnen();
+//       // this.gesamtbilanz_ausgeben();
+//   }
+// };
+
+// haushaltsbuch.eintrag_hinzufuegen();
+// // haushaltsbuch.eintrag_hinzufuegen();
+// // haushaltsbuch.eintrag_hinzufuegen();
+
+// console.log(haushaltsbuch);
+
+
+// NEUER  CODE NACH METHODEN WIEDERHERSTELLEN UND VERBEESSERN PRAXIS 8
+
 // Objekt haushaltsbuch anlegen
 const haushaltsbuch = {
 
@@ -239,15 +319,17 @@ const haushaltsbuch = {
       );
   },
 
-//   // Method 02:Eingabedaten ausgeben
-//   eintrag_ausgeben() {
-//       console.log(`Titel: ${this.neuer_eintrag.titel}
-//   Typ: ${this.neuer_eintrag.typ }
-//   Betrag: ${this.neuer_eintrag.betrag} ct
-//   Datum: ${this.neuer_eintrag.datum }`
-//       );
-//   },
-
+  // Method 02:Eingabedaten ausgeben
+  eintraege_ausgeben() {
+      console.clear();
+      this.eintraege.forEach(function (eintrag) {
+        console.log(`Titel: ${eintrag.titel}\n`
+            + `Typ: ${eintrag.typ}\n`
+            + `Betrag: ${eintrag.betrag} ct\n`
+            + `Datum: ${eintrag.datum}`
+          );
+      })
+  },
 
 // // Method 03:Einträge in Einnahmen, Ausgaben und Gesamtbelanz verrechnen
 //   eintrag_mit_gesamtbilanz_verrechnen() {
@@ -280,14 +362,14 @@ const haushaltsbuch = {
   // Funktion 05:Alle Funktionsaufrufe zusammengefasst
   eintrag_hinzufuegen() {
       this.eintrag_erfassen();                                // Achtung! Hier auch mit .this referenzieren!
-      // this.eintrag_ausgeben();
+      this.eintraege_ausgeben();
       // this.eintrag_mit_gesamtbilanz_verrechnen();
       // this.gesamtbilanz_ausgeben();
   }
 };
 
 haushaltsbuch.eintrag_hinzufuegen();
-// haushaltsbuch.eintrag_hinzufuegen();
-// haushaltsbuch.eintrag_hinzufuegen();
+haushaltsbuch.eintrag_hinzufuegen();
+haushaltsbuch.eintrag_hinzufuegen();
 
 console.log(haushaltsbuch);
