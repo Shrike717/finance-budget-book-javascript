@@ -366,17 +366,30 @@ const haushaltsbuch = {
 //       );
 //   },
 
-  // Funktion 05:Alle Funktionsaufrufe zusammengefasst
+  // Method 04:Gesamtbilanz ausgeben
+  gesamtbilanz_ausgeben() {
+      console.log(`Einnahmen:${this.gesamtbilanz.einnahmen} ct\n`
+        + `Ausgaben: ${this.gesamtbilanz.ausgaben} ct\n`
+        + `Bilanz: ${this.gesamtbilanz.bilanz} ct\n`
+        + `Bilanz ist positiv: ${this.gesamtbilanz.bilanz >= 0}`
+      );
+  },
+
+
+  // Funktion 05:Alle Funktionsaufrufe zusammengefasst in einer while Schleife
   eintrag_hinzufuegen() {
-      this.eintrag_erfassen();                                // Achtung! Hier auch mit .this referenzieren!
+    let weiterer_eintrag = true;
+
+    while (weiterer_eintrag) {
+      this.eintrag_erfassen();
       this.eintraege_ausgeben();
       this.gesamtbilanz_erstellen();
-      // this.gesamtbilanz_ausgeben();
+      this.gesamtbilanz_ausgeben();
+      weiterer_eintrag = confirm("Weiteren Eintrag hinzufügen?");
+    }
   }
 };
 
-haushaltsbuch.eintrag_hinzufuegen();
-haushaltsbuch.eintrag_hinzufuegen();
 haushaltsbuch.eintrag_hinzufuegen();
 
 console.log(haushaltsbuch);
