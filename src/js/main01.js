@@ -69,18 +69,18 @@
 // // Objekt haushaltsbuch anlegen
 // const haushaltsbuch = {
 
-//     gesamtbilanz: {
-//         einnahmen: 0,
-//         ausgaben: 0,
-//         bilanz: 0,
-//     },
+    // gesamtbilanz: {
+    //     einnahmen: 0,
+    //     ausgaben: 0,
+    //     bilanz: 0,
+    // },
 
-//     neuer_eintrag: {
-//         titel: null,
-//         typ: null,
-//         betrag: null,
-//         datum: null
-//     },
+    // neuer_eintrag: {
+    //     titel: null,
+    //     typ: null,
+    //     betrag: null,
+    //     datum: null
+    // },
 
 //     // Method 01:Eingabedaten holen
 //     eintrag_erfassen() {
@@ -719,7 +719,7 @@ const haushaltsbuch = {
     neuer_eintrag.set("titel", prompt("Titel:").trim());
     neuer_eintrag.set("typ", prompt("Typ (Einnahme oder Ausgabe):").trim());
     neuer_eintrag.set("betrag", this.betrag_verarbeiten(prompt("Betrag (in Euro, ohne €-Zeichen):").trim()));
-    neuer_eintrag.set("datum", new Date(prompt("Datum (jjjj-mm-tt):").trim() + " 00:00:00"));
+    neuer_eintrag.set("datum", this.datum_verarbeiten(prompt("Datum (jjjj-mm-tt):").trim()));
     neuer_eintrag.set("timestamp", Date.now());
 
     this.eintraege.push(neuer_eintrag);
@@ -746,7 +746,27 @@ const haushaltsbuch = {
       }
   },
 
-   // Method 01.3: Einträge nach Datum abbsteigend sortieren.
+    // Method 01.3: Datum verarbeiten:
+    datum_verarbeiten(datum) {
+      if (this.datum_validieren(datum)) {
+          return new Date(`${datum} 00:00:00`);
+      } else {
+          console.log(`Ungültiges Datumsformat ${datum} €`);
+          return false;
+      }
+    },
+
+  // Methode 01.4 Datum mit Regex validieren:
+    datum_validieren(datum) {
+      if (datum.match(/^\d{4}-\d{2}-\d{2}$/) !== null) {
+          return true;
+      } else {
+          return false;
+      }
+  },
+
+
+   // Method 015: Einträge nach Datum absteigend sortieren.
    eintraege_sortieren() {
     this.eintraege.sort(function (eintrag_a, eintrag_b) {
       if (eintrag_a.get("datum") > eintrag_b.get("datum")) {
