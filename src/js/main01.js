@@ -716,28 +716,69 @@ const haushaltsbuch = {
 
     let neuer_eintrag = new Map();
 
-    neuer_eintrag.set("titel", prompt("Titel:").trim());
-    neuer_eintrag.set("typ", prompt("Typ (Einnahme oder Ausgabe):").trim());
-    neuer_eintrag.set("betrag", this.betrag_verarbeiten(prompt("Betrag (in Euro, ohne €-Zeichen):").trim()));
-    neuer_eintrag.set("datum", this.datum_verarbeiten(prompt("Datum (jjjj-mm-tt):").trim()));
+    neuer_eintrag.set("titel", this.titel_verarbeiten(prompt("Titel:")));
+    neuer_eintrag.set("typ", this.typ_verarbeiten(prompt("Typ (Einnahme oder Ausgabe):")));
+    neuer_eintrag.set("betrag", this.betrag_verarbeiten(prompt("Betrag (in Euro, ohne €-Zeichen):")));
+    neuer_eintrag.set("datum", this.datum_verarbeiten(prompt("Datum (jjjj-mm-tt):")));
     neuer_eintrag.set("timestamp", Date.now());
 
     this.eintraege.push(neuer_eintrag);
  },
 
+   // Method 01.1: Titel verarbeiten:
+   titel_verarbeiten(titel) {
+    // Bsp. "23,64 " -> "23.64" -> 23.64 -> 23634
+    titel = titel.trim();
+    if (this.titel_validieren(titel)) {
+        return titel;
+    } else {
+        console.log("Kein Titel angegeben.");
+        return false;
+    }
+  },
 
-  // Method 01.1: Betrag verarbeiten:
+// Methode 01.2 Titel validieren:
+  titel_validieren(titel) {
+    if (titel !== "") {
+        return true;
+    } else {
+        return false;
+    }
+},
+
+   // Method 01.3: Typ verarbeiten:
+   typ_verarbeiten(typ) {
+    typ = typ.trim().toLowerCase();
+    if (this.typ_validieren(typ)) {
+        return typ;
+    } else {
+        console.log(`Ungültiger Eintrags-Typ "${typ}".`);
+        return false;
+    }
+  },
+
+// Methode 01.4 Typ validieren:
+  typ_validieren(typ) {
+    if (typ.match(/^(?:einnahme|ausgabe)$/) !== null) {
+        return true;
+    } else {
+        return false;
+    }
+},
+
+  // Method 01.5: Betrag verarbeiten:
     betrag_verarbeiten(betrag) {
       // Bsp. "23,64 " -> "23.64" -> 23.64 -> 23634
+      betrag = betrag.trim();
       if (this.betrag_validieren(betrag)) {
           return parseFloat(betrag.replace(",", ".")) * 100;
       } else {
-          console.log(`Ungültiger Betrag ${betrag} €`);
+          console.log(`Ungültiger Betrag ${betrag} €.`);
           return false;
       }
     },
 
-  // Methode 01.2 Betrag mit Regex validieren:
+  // Methode 01.6 Betrag mit Regex validieren:
   betrag_validieren(betrag) {
       if (betrag.match(/^\d+(?:(?:,|\.)\d\d?)?$/) !== null) {
           return true;
@@ -746,17 +787,18 @@ const haushaltsbuch = {
       }
   },
 
-    // Method 01.3: Datum verarbeiten:
+    // Method 01.7: Datum verarbeiten:
     datum_verarbeiten(datum) {
+      datum = datum.trim();
       if (this.datum_validieren(datum)) {
           return new Date(`${datum} 00:00:00`);
       } else {
-          console.log(`Ungültiges Datumsformat ${datum} €`);
+          console.log(`Ungültiges Datumsformat "${datum}".`);
           return false;
       }
     },
 
-  // Methode 01.4 Datum mit Regex validieren:
+  // Methode 01.8 Datum mit Regex validieren:
     datum_validieren(datum) {
       if (datum.match(/^\d{4}-\d{2}-\d{2}$/) !== null) {
           return true;
@@ -766,7 +808,7 @@ const haushaltsbuch = {
   },
 
 
-   // Method 015: Einträge nach Datum absteigend sortieren.
+   // Method 01.10: Einträge nach Datum absteigend sortieren.
    eintraege_sortieren() {
     this.eintraege.sort(function (eintrag_a, eintrag_b) {
       if (eintrag_a.get("datum") > eintrag_b.get("datum")) {
@@ -805,11 +847,11 @@ const haushaltsbuch = {
 
     this.eintraege.forEach(function (eintrag) {
         switch (eintrag.get("typ")) {
-            case "Einnahme":
+            case "einnahme":
                 neue_gesamtbilanz.set("einnahmen", neue_gesamtbilanz.get("einnahmen") + eintrag.get("betrag"));
                 neue_gesamtbilanz.set("bilanz", neue_gesamtbilanz.get("bilanz") + eintrag.get("betrag"));
                 break;
-            case "Ausgabe":
+            case "ausgabe":
                 neue_gesamtbilanz.set("ausgaben", neue_gesamtbilanz.get("ausgaben") + eintrag.get("betrag"));
                 neue_gesamtbilanz.set("bilanz", neue_gesamtbilanz.get("bilanz") - eintrag.get("betrag"))
                 break;
