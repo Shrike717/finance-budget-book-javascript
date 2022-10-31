@@ -708,8 +708,8 @@
 const haushaltsbuch = {
 
   gesamtbilanz: new Map(),
-
   eintraege: [],
+  fehler: [],
 
 // Method 01:Eingabedaten holen
   eintrag_erfassen() {
@@ -722,18 +722,23 @@ const haushaltsbuch = {
     neuer_eintrag.set("datum", this.datum_verarbeiten(prompt("Datum (jjjj-mm-tt):")));
     neuer_eintrag.set("timestamp", Date.now());
 
-    this.eintraege.push(neuer_eintrag);
+    if(this.fehler.length === 0) {
+      this.eintraege.push(neuer_eintrag);
+    } else {
+      console.log("Folgende Fehler wurden gefunden:");
+      this.fehler.forEach(function(fehler) {
+        console.log(fehler);
+      });
+    }
  },
 
    // Method 01.1: Titel verarbeiten:
    titel_verarbeiten(titel) {
-    // Bsp. "23,64 " -> "23.64" -> 23.64 -> 23634
     titel = titel.trim();
     if (this.titel_validieren(titel)) {
         return titel;
     } else {
-        console.log("Kein Titel angegeben.");
-        return false;
+        this.fehler.push("Kein Titel angegeben.");
     }
   },
 
@@ -752,8 +757,7 @@ const haushaltsbuch = {
     if (this.typ_validieren(typ)) {
         return typ;
     } else {
-        console.log(`Ungültiger Eintrags-Typ "${typ}".`);
-        return false;
+      this.fehler.push(`Ungültiger Eintrags-Typ: "${typ}".`);
     }
   },
 
@@ -773,8 +777,7 @@ const haushaltsbuch = {
       if (this.betrag_validieren(betrag)) {
           return parseFloat(betrag.replace(",", ".")) * 100;
       } else {
-          console.log(`Ungültiger Betrag ${betrag} €.`);
-          return false;
+        this.fehler.push(`Ungültiger Betrag: ${betrag} €.`);
       }
     },
 
@@ -793,8 +796,7 @@ const haushaltsbuch = {
       if (this.datum_validieren(datum)) {
           return new Date(`${datum} 00:00:00`);
       } else {
-          console.log(`Ungültiges Datumsformat "${datum}".`);
-          return false;
+        this.fehler.push(`Ungültiges Datumsformat: "${datum}".`);
       }
     },
 
@@ -878,11 +880,15 @@ const haushaltsbuch = {
 
     while (weiterer_eintrag) {
       this.eintrag_erfassen();
-      this.eintraege_sortieren();
-      this.eintraege_ausgeben();
-      this.gesamtbilanz_erstellen();
-      this.gesamtbilanz_ausgeben();
-      weiterer_eintrag = confirm("Weiteren Eintrag hinzufügen?");
+      if (this.fehler.length === 0) {
+        this.eintraege_sortieren();
+        this.eintraege_ausgeben();
+        this.gesamtbilanz_erstellen();
+        this.gesamtbilanz_ausgeben();
+      } else {
+        this.fehler = [];
+      }
+      weiterer_eintrag = confirm("Weiteren Eintrag hinzufügen?"); // Bei OK true, bei Abbrechen false
     }
   }
 };
