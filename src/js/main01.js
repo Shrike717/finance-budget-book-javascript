@@ -1062,14 +1062,23 @@ const haushaltsbuch = {
 
   eintraege_anzeigen() {
 
-    // Überprüfen, ob bereits eine <ul> vorhanden ist
-      // ggfls. <ul> entfernen
+    // Überprüfen, ob bereits eine oder mehrere <ul> im container article.monatsliste vorhanden sind
+    // ggfls. <ul> entfernen
+    document.querySelectorAll(".monatsliste ul").forEach(function(eintragsliste) {
+      eintragsliste.remove();
+  });
 
     // <ul> erstellen
     // über eintragege [] iterieren
       // Für jeden Eintrag einen HTML-Eintrag erstellen
       // HTML-Eintrag in ul einsetzen
-    // Die generieerte <ul> in den article.monatsliste einsetzen
+    // Die generierte <ul> in den article.monatsliste einsetzen
+
+    let eintragsliste = document.createElement("ul");
+    for (let eintrag of this.eintraege) {
+      eintragsliste.insertAdjacentElement("beforeend", this.html_eintrag_generieren(eintrag))
+    }
+    document.querySelector(".monatsliste").insertAdjacentElement("afterbegin", eintragsliste);
   },
 
   // Method 03: Gesamtbilanz erstellen:
