@@ -910,7 +910,7 @@ const haushaltsbuch = {
   eintraege: [],
   fehler: [],
 
-  // Method 01:Eingabedaten holen
+  // Methode: Eingabedaten holen
   eintrag_erfassen() {
 
     let neuer_eintrag = new Map();
@@ -931,7 +931,7 @@ const haushaltsbuch = {
     }
   },
 
-   // Method 01.1: Titel verarbeiten:
+   // Methode: Titel verarbeiten:
    titel_verarbeiten(titel) {
     titel = titel.trim();
     if (this.titel_validieren(titel)) {
@@ -941,7 +941,7 @@ const haushaltsbuch = {
     }
   },
 
-  // Methode 01.2 Titel validieren:
+  // Methode: Titel validieren:
   titel_validieren(titel) {
     if (titel !== "") {
         return true;
@@ -950,7 +950,7 @@ const haushaltsbuch = {
     }
   },
 
-   // Method 01.3: Typ verarbeiten:
+   // Methode: Typ verarbeiten:
    typ_verarbeiten(typ) {
     typ = typ.trim().toLowerCase();
     if (this.typ_validieren(typ)) {
@@ -960,7 +960,7 @@ const haushaltsbuch = {
     }
   },
 
-  // Methode 01.4 Typ validieren:
+  // Methode: Typ validieren:
   typ_validieren(typ) {
     if (typ.match(/^(?:einnahme|ausgabe)$/) !== null) {
         return true;
@@ -969,7 +969,7 @@ const haushaltsbuch = {
     }
   },
 
-  // Method 01.5: Betrag verarbeiten:
+  // Methode: Betrag verarbeiten:
     betrag_verarbeiten(betrag) {
       // Bsp. "23,64 " -> "23.64" -> 23.64 -> 23634
       betrag = betrag.trim();
@@ -980,7 +980,7 @@ const haushaltsbuch = {
       }
     },
 
-  // Methode 01.6 Betrag mit Regex validieren:
+  // Methode: Betrag mit Regex validieren:
   betrag_validieren(betrag) {
       if (betrag.match(/^\d+(?:(?:,|\.)\d\d?)?$/) !== null) {
           return true;
@@ -989,7 +989,7 @@ const haushaltsbuch = {
       }
   },
 
-  // Method 01.7: Datum verarbeiten:
+  // Methode: Datum verarbeiten:
   datum_verarbeiten(datum) {
     datum = datum.trim();
     if (this.datum_validieren(datum)) {
@@ -999,7 +999,7 @@ const haushaltsbuch = {
     }
   },
 
-  // Methode 01.8 Datum mit Regex validieren:
+  // Methode: Datum mit Regex validieren:
     datum_validieren(datum) {
       if (datum.match(/^\d{4}-\d{2}-\d{2}$/) !== null) {
           return true;
@@ -1009,21 +1009,21 @@ const haushaltsbuch = {
   },
 
 
-  // Method 01.10: Einträge nach Datum absteigend sortieren.
-   eintraege_sortieren() {
-  this.eintraege.sort(function (eintrag_a, eintrag_b) {
-    if (eintrag_a.get("datum") > eintrag_b.get("datum")) {
-        return -1;
-    } else if (eintrag_a.get("datum") < eintrag_b.get("datum")){
-        return 1;
-    } else {
-        return 0;
-      };
-    });
+  // Methode: Einträge nach Datum absteigend sortieren.
+  eintraege_sortieren() {
+    this.eintraege.sort(function (eintrag_a, eintrag_b) {
+      if (eintrag_a.get("datum") > eintrag_b.get("datum")) {
+          return -1;
+      } else if (eintrag_a.get("datum") < eintrag_b.get("datum")){
+          return 1;
+      } else {
+          return 0;
+        };
+      });
   },
 
 
-  // Method 02:Eingabedaten ausgeben
+  // Methode: Eingabedaten ausgeben
   // Wird durch HTML Ausgabe ersetzt
 //   eintraege_ausgeben() {
 //     console.clear();
@@ -1043,13 +1043,13 @@ const haushaltsbuch = {
 // Das ist der HTML-Code als Anschauungsbeispiel:
 
 // <ul>
-// <li class="ausgabe">
+// <li class="ausgabe" data-timestamp=„12437253722“>
 //     <span class="datum">03.02.2020</span>
 //     <span class="titel">Miete</span>
 //     <span class="betrag">545,00 €</span>
 //     <button class="entfernen-button"><i class="fas fa-trash"></i></button>
 // </li>
-// <li class="einnahme">
+// <li class="einnahme" data-timestamp=„12437253148“>
 //     <span class="datum">01.02.2020</span>
 //     <span class="titel">Gehalt</span>
 //     <span class="betrag">2064,37 €</span>
@@ -1057,9 +1057,69 @@ const haushaltsbuch = {
 // </li>
 // </ul>
 
+  // Methode: Eintrag als HTML-Listenpunkt mit allen spans darin generieren
+  html_eintrag_generieren(eintrag) {
 
-  // html_eintrag_generieren(eintrag)
+    // Listenpunkt anlegen
+    let listenpunkt = document.createElement("li");
+    // Der Typ wird vom Eintrag (Map_Objekt abgegriffen). Wenn "einnahme" wird das als Klasse gesetzt.
+    // Mit else if wird nochmal auf "ausgabe" geprüft und das dann als Klasse gesetzt.
+    if (eintrag.get("typ") === "einnahme") {
+      listenpunkt.setAttribute("class", "einnahme");
+    } else if (eintrag.get("typ") === "ausgabe") {
+      listenpunkt.setAttribute("class", "ausgabe");
+    }
+    // Das Data-Objekt wird aus der Eintrag-Map abgegriffen und dem listenpunkt als Attribut gesetzt
+    listenpunkt.setAttribute("data-eintrag", eintrag.get("timestamp"));
 
+    //Span für datum anlegen
+    let datum = document.createElement("span");
+    // Die Klasse datum wird gesetzt
+    datum.setAttribute("class", "datum");
+    // Die Eigenschaft textContent wird gesetzt. Sie ist das abgegriffene Datum in deutscher Schreibweise und einem Format-Objekt.
+    datum.textContent = eintrag.get("datum").toLocaleDateString("de-DE", {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit"
+    })
+    // Span datum in listenpunkt als erstes Element einsetzen:
+    listenpunkt.insertAdjacentElement("afterbegin", datum);
+
+    //Komplette Span für titel anlegen  und NACH der ersten Span datum in listenpunkt setzen:
+    let titel = document.createElement("span");
+    titel.setAttribute("class", "titel");
+    titel.textContent = eintrag.get("titel");
+    // Hier wird jetzt die span datum referenziert und die titel-Span danach eingesetzt!
+    datum.insertAdjacentElement("afterend", titel);
+
+    // Komplette Span für betrag anlegen
+    let betrag = document.createElement("span");
+    betrag.setAttribute("class", "betrag");
+    // Betragdarstellung kniffelig deswegen Ausgabe als Template-String:
+    // Betrag kommt in Cent. Deswegen beim Abgreifen den Begriff in Klammern setzen und darin durch 100 teilen. Jetzt sinds Euro
+    // An diese Klammern kann ich .toFixed(2) anschliessen. Ergibt 2 Nachkommastellen in Ausgabe als String.
+    // Da ich jetzt String habe, kann ich reeplace() dranhängen. Mit Regex den . auswählen(escape) und mit , ersetzen. Dann €-Zeichen.
+    betrag.textContent = `${(eintrag.get("betrag") / 100).toFixed(2).replace(/\./, ",")} €`;
+    // Hier wird jetzt die span titel referenziert und die betrag-Span danach eingesetzt!
+    titel.insertAdjacentElement("afterend", betrag);
+
+    // button-Element anlegen:
+    let button = document.createElement("button");
+    button.setAttribute("class", "entfernen-button");
+    // VOR Erstellung des icon-Elements wird jetzt zuerst das button-Element in listenpunkt platziert!
+    betrag.insertAdjacentElement("afterend", button);
+
+    // icon-Element anlegen:
+    let icon = document.createElement("i");
+    icon.setAttribute("class", "fas fa-trash");
+    // Jetzt wird das icon-Element in den Button eingesetzt:
+    button.insertAdjacentElement("afterbegin", icon);
+
+    // WICHTIG: Den zusammengebauten listenpunkt mit explizitem return zurückgeben:
+    return listenpunkt;
+  },
+
+  // Methode: Oben generierte Listenpunkte in <ul> schiessen und diese in <article> schiessen. eintrag erzeugen.
   eintraege_anzeigen() {
 
     // Überprüfen, ob bereits eine oder mehrere <ul> im container article.monatsliste vorhanden sind
@@ -1081,7 +1141,7 @@ const haushaltsbuch = {
     document.querySelector(".monatsliste").insertAdjacentElement("afterbegin", eintragsliste);
   },
 
-  // Method 03: Gesamtbilanz erstellen:
+  // Methode: Gesamtbilanz erstellen:
   gesamtbilanz_erstellen() {
     let neue_gesamtbilanz = new Map();
     neue_gesamtbilanz.set("einnahmen", 0);
@@ -1108,7 +1168,7 @@ const haushaltsbuch = {
 
   },
 
-   // Method 04:Gesamtbilanz ausgeben
+   // Methode: Gesamtbilanz ausgeben
    // Wird durch HTML-Ausgabe ersetzt
 //    gesamtbilanz_ausgeben() {
 //     console.log(`Einnahmen:${(this.gesamtbilanz.get("einnahmen") / 100).toFixed(2)} €\n`
@@ -1122,7 +1182,7 @@ const haushaltsbuch = {
 
   // gesamtbilanz_anzeigen()
 
-  // Funktion 05:Alle Funktionsaufrufe zusammengefasst in einer while Schleife
+  // Methode: Alle Funktionsaufrufe zusammengefasst in einer while Schleife
   eintrag_hinzufuegen() {
     let weiterer_eintrag = true;
 
@@ -1133,8 +1193,9 @@ const haushaltsbuch = {
         this.eintraege_sortieren();
         this.eintraege_anzeigen();
         this.gesamtbilanz_erstellen();
-        this.gesamtbilanz_ausgeben();
+        // this.gesamtbilanz_ausgeben();
       } else {
+        // Fehler Array wieder löschen, sonst stuck an der Stelle.
         this.fehler = [];
       }
       weiterer_eintrag = confirm("Weiteren Eintrag hinzufügen?"); // Bei OK true, bei Abbrechen false
