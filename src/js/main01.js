@@ -1040,7 +1040,7 @@ const haushaltsbuch = {
 //     })
 // },
 
-// Das ist der HTML-Code als Anschauungsbeispiel:
+// Das ist der HTML-Code für die Einträge als Anschauungsbeispiel:
 
 // <ul>
 // <li class="ausgabe" data-timestamp=„12437253722“>
@@ -1141,7 +1141,7 @@ const haushaltsbuch = {
     document.querySelector(".monatsliste").insertAdjacentElement("afterbegin", eintragsliste);
   },
 
-  // Methode: Gesamtbilanz erstellen:
+  // Methode: Gesamtbilanz erstellen verrchnet die Einträge jeweils mit der Gesamtbilanz:
   gesamtbilanz_erstellen() {
     let neue_gesamtbilanz = new Map();
     neue_gesamtbilanz.set("einnahmen", 0);
@@ -1178,9 +1178,93 @@ const haushaltsbuch = {
 //     );
 // },
 
-  // html_gesamtbilanz_generieren()
+// Das ist der HTML-Code für die Gesamtbilanz als Anschauungsbeispiel:
 
-  // gesamtbilanz_anzeigen()
+// <aside id="gesamtbilanz">
+// <h1>Gesamtbilanz</h1>
+// <div class="gesamtbilanz-zeile einnahmen"><span>Einnahmen:</span><span>0,00€</span></div>
+// <div class="gesamtbilanz-zeile ausgaben"><span>Ausgaben:</span><span>0,00€</span></div>
+// <div class="gesamtbilanz-zeile bilanz"><span>Bilanz:</span><span class="positiv">0,00€</span></div>
+// </aside>
+
+  // Methode: Erzeugt das ganze HTML-Element <aside> mit den Werten für die Gesamtbilanz.
+  html_gesamtbilanz_generieren() {
+
+    // Anhand der aktuellen gesamtbilanz die Gesamtbilanz neu generieren.
+
+    // <aside> kreieren und Klasse setzen.
+    let gesamtbilanz = document.createElement("aside");
+    gesamtbilanz.setAttribute("id", "gesamtbilanz");
+
+    // h1 kreieren, Text rein und an erste Stelle in <aside> platzieren.
+    let ueberschrift = document.createElement("h1");
+    ueberschrift.textContent = "Gesamtbilanz";
+    gesamtbilanz.insertAdjacentElement("afterbegin", ueberschrift);
+
+    // Erste Zeile Einnahmen kreieren, zusammenbauen und an letzter Stelle in <aside> platzieren.
+    let einnahmen_zeile = document.createElement("div");
+    einnahmen_zeile.setAttribute("class", "gesamtbilanz-zeile einnahmen");
+
+    let einnahmen_titel = document.createElement("span");
+    einnahmen_titel.textContent = "Einnahmen:";
+    einnahmen_zeile.insertAdjacentElement("afterbegin", einnahmen_titel);
+
+    let einnahmen_betrag = document.createElement("span");
+    einnahmen_betrag.textContent = `${(this.gesamtbilanz.get("einnahmen") / 100).toFixed(2).replace(/\./, ",")} €`;
+    einnahmen_zeile.insertAdjacentElement("beforeend", einnahmen_betrag);
+
+    gesamtbilanz.insertAdjacentElement("beforeend", einnahmen_zeile);
+
+     // Zweite Zeile Ausgaben kreieren, zusammenbauen und an letzter Stelle in <aside> platzieren.
+     let ausgaben_zeile = document.createElement("div");
+     ausgaben_zeile.setAttribute("class", "gesamtbilanz-zeile ausgaben");
+
+     let ausgaben_titel = document.createElement("span");
+     ausgaben_titel.textContent = "Ausgaben:";
+     ausgaben_zeile.insertAdjacentElement("afterbegin", ausgaben_titel);
+
+     let ausgaben_betrag = document.createElement("span");
+     ausgaben_betrag.textContent = `${(this.gesamtbilanz.get("ausgaben") / 100).toFixed(2).replace(/\./, ",")} €`;
+     ausgaben_zeile.insertAdjacentElement("beforeend", ausgaben_betrag);
+
+     gesamtbilanz.insertAdjacentElement("beforeend", ausgaben_zeile);
+
+    // Dritte Zeile Bilanz kreieren, zusammenbauen und an letzter Stelle in <aside> platzieren.
+    let bilanz_zeile = document.createElement("div");
+    bilanz_zeile.setAttribute("class", "gesamtbilanz-zeile bilanz");
+
+    let bilanz_titel = document.createElement("span");
+    bilanz_titel.textContent = "Bilanz:";
+    bilanz_zeile.insertAdjacentElement("afterbegin", bilanz_titel);
+
+    let bilanz_betrag = document.createElement("span");
+    // Hier die Logik ob die Klasse "positiv" oder "negativ" gesetzt wird und das Feld die entsprechende Farbe bekommt:
+    if (this.gesamtbilanz.get("bilanz") >= 0) {
+      bilanz_betrag.setAttribute("class", "positiv");
+    } else if (this.gesamtbilanz.get("bilanz") < 0) {
+      bilanz_betrag.setAttribute("class", "negativ");
+    }
+    bilanz_betrag.textContent = `${(this.gesamtbilanz.get("bilanz") / 100).toFixed(2).replace(/\./, ",")} €`;
+    bilanz_zeile.insertAdjacentElement("beforeend", bilanz_betrag);
+
+    gesamtbilanz.insertAdjacentElement("beforeend", bilanz_zeile);
+
+    // WICHTIG: Explizite Rückgabe mit return
+    return gesamtbilanz;
+  },
+
+  gesamtbilanz_anzeigen() {
+
+    // Prüfen, ob bereits eine Gesamtbilanz angezeigt wird
+     // Dann ggfls. entfernen.
+    document.querySelectorAll("#gesamtbilanz").forEach(function(gesamzbilanz) {
+      gesamtbilanz.remove();
+    })
+
+    // Neue Gesamtbilanz im Frontend an richtiger Stelle anzeigen (html_gesamtbilanz_generieren())
+    document.querySelector("body").insertAdjacentElement("beforeend", this.html_gesamtbilanz_generieren());
+  },
+
 
   // Methode: Alle Funktionsaufrufe zusammengefasst in einer while Schleife
   eintrag_hinzufuegen() {
@@ -1193,7 +1277,7 @@ const haushaltsbuch = {
         this.eintraege_sortieren();
         this.eintraege_anzeigen();
         this.gesamtbilanz_erstellen();
-        // this.gesamtbilanz_ausgeben();
+        this.gesamtbilanz_anzeigen();
       } else {
         // Fehler Array wieder löschen, sonst stuck an der Stelle.
         this.fehler = [];
