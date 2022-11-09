@@ -2,6 +2,27 @@
 
 const eingabeformular = {
 
+  absenden_event_hinzufuegen(eingabeformular) {
+
+    eingabeformular.querySelector("#eingabeformular").addEventListener("submit", e => {
+      e.preventDefault();
+                  // Formulardaten holen
+            // Formulardaten verarbeiten
+            // Formulardaten validieren
+            // wenn die Formulardaten valide sind
+                // Eintrag zum Haushaltsbuch hinzufügen
+                // wenn bereits Fehlermeldung angezeigt wird
+                    // Fehlermeldung entfernen
+                // Formular zurücksetzen
+                // Datum auf den heutigen Tag setzen
+            // wenn die Formulardaten NICHT valide sind
+                // wenn bereits Fehlermeldung angezeigt wird
+                    // Fehlermeldung entfernen
+                // Fehlermeldung im Eingabeformular-Container anzeigen
+    });
+  },
+
+  // Methode: Kreiert as Eingabeformular und injeziert das HTML
   html_generieren() {
 
     let eingabeformular = document.createElement("section");
@@ -32,11 +53,15 @@ const eingabeformular = {
           <button class="standard" type="submit" form="eingabeformular">Hinzufügen</button>
       </div>`;
 
+    // eingabeformular wird nach oben übergeben.
+    this.absenden_event_hinzufuegen(eingabeformular);
+
     return eingabeformular;
   },
 
   anzeigen() {
 
     document.querySelector("#navigationsleiste").insertAdjacentElement("afterend", this.html_generieren());
+    // Datum auf den heutigen Tag setzen
   }
 };
