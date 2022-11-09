@@ -2,23 +2,44 @@
 
 const eingabeformular = {
 
+
+  formulardaten_holen(e) {
+    let typ;
+    if (e.target.elements.einnahme.checked === true) {
+      typ = "einnahme";
+    } else if(e.target.elements.ausgabe.checked === true) {
+      typ = "ausgabe";
+    }
+
+    return {
+      titel: e.target.elements.titel.value,
+      betrag: e.target.elements.betrag.value,
+      typ: typ,
+      datum: e.target.elements.datum.valueAsDate
+    }
+  },
+
+  // Methode: Fängt das Submit Event ab.
   absenden_event_hinzufuegen(eingabeformular) {
 
     eingabeformular.querySelector("#eingabeformular").addEventListener("submit", e => {
       e.preventDefault();
-                  // Formulardaten holen
-            // Formulardaten verarbeiten
-            // Formulardaten validieren
-            // wenn die Formulardaten valide sind
-                // Eintrag zum Haushaltsbuch hinzufügen
-                // wenn bereits Fehlermeldung angezeigt wird
-                    // Fehlermeldung entfernen
-                // Formular zurücksetzen
-                // Datum auf den heutigen Tag setzen
-            // wenn die Formulardaten NICHT valide sind
-                // wenn bereits Fehlermeldung angezeigt wird
-                    // Fehlermeldung entfernen
-                // Fehlermeldung im Eingabeformular-Container anzeigen
+      console.log(e);
+      // Formulardaten holen
+      let formulardaten = this.formulardaten_holen(e);
+      console.log(formulardaten);
+      // Formulardaten verarbeiten
+      // Formulardaten validieren
+      // wenn die Formulardaten valide sind
+          // Eintrag zum Haushaltsbuch hinzufügen
+          // wenn bereits Fehlermeldung angezeigt wird
+              // Fehlermeldung entfernen
+          // Formular zurücksetzen
+          // Datum auf den heutigen Tag setzen
+      // wenn die Formulardaten NICHT valide sind
+          // wenn bereits Fehlermeldung angezeigt wird
+              // Fehlermeldung entfernen
+          // Fehlermeldung im Eingabeformular-Container anzeigen
     });
   },
 
