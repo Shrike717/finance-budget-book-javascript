@@ -2,33 +2,42 @@
 
 const eingabeformular = {
 
-
+  // Methode: Holt die Roh-Eingabedaten aus dem submit Event
   formulardaten_holen(e) {
-    let typ;
-    if (e.target.elements.einnahme.checked === true) {
-      typ = "einnahme";
-    } else if(e.target.elements.ausgabe.checked === true) {
-      typ = "ausgabe";
-    }
-
     return {
       titel: e.target.elements.titel.value,
       betrag: e.target.elements.betrag.value,
-      typ: typ,
+      einnahme: e.target.elements.einnahme.checked,
+      ausgabe: e.target.elements.ausgabe.checked,
       datum: e.target.elements.datum.valueAsDate
     }
   },
 
-  // Methode: Fängt das Submit Event ab.
+  // Methode: Verarbeitet die Roh-Eingabedaten
+  formulardaten_verarbeiten(formulardaten) {
+    let typ;
+    if (formulardaten.einnahme === true) {
+      typ = "einnahme";
+    } else if(formulardaten.ausgabe === true) {
+      typ = "ausgabe";
+    }
+
+    return {
+      titel: formulardaten.titel.trim(),
+      typ: typ,
+      betrag: parseFloat(formulardaten.betrag) * 100,
+      datum: formulardaten.datum
+    }
+  },
+
+  // Methode: Fängt das Submit Event ab am form-Tag ab.
   absenden_event_hinzufuegen(eingabeformular) {
 
     eingabeformular.querySelector("#eingabeformular").addEventListener("submit", e => {
       e.preventDefault();
-      console.log(e);
-      // Formulardaten holen
-      let formulardaten = this.formulardaten_holen(e);
-      console.log(formulardaten);
+      // Formulardaten holen. Kommt von obiger Methode formulardaten_holen(e). Dorthin wird e zum Abgreifen geschickt.
       // Formulardaten verarbeiten
+      let formulardaten = this.formulardaten_verarbeiten(this.formulardaten_holen(e));
       // Formulardaten validieren
       // wenn die Formulardaten valide sind
           // Eintrag zum Haushaltsbuch hinzufügen
@@ -43,7 +52,7 @@ const eingabeformular = {
     });
   },
 
-  // Methode: Kreiert as Eingabeformular und injeziert das HTML
+  // Methode: Kreiert as Eingabeformular und injiziert das HTML
   html_generieren() {
 
     let eingabeformular = document.createElement("section");
