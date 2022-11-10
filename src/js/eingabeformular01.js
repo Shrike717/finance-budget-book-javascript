@@ -49,6 +49,15 @@ const eingabeformular = {
     return fehler;
   },
 
+  // Methode: Aktualisiert das Datum
+  datum_aktualisieren() {
+    let datums_input = document.querySelector("#datum");
+
+    if(datums_input !== null) {
+      datums_input.valueAsDate = new Date();
+    }
+  },
+
   // Methode: Fängt das Submit Event ab am form-Tag ab.
   absenden_event_hinzufuegen(eingabeformular) {
 
@@ -57,20 +66,24 @@ const eingabeformular = {
       // Formulardaten holen. Kommt von obiger Methode formulardaten_holen(e). Dorthin wird e zum Abgreifen geschickt.
       // Formulardaten verarbeiten
       let formulardaten = this.formulardaten_verarbeiten(this.formulardaten_holen(e));
-      // console.log(this.formulardaten_verarbeiten(this.formulardaten_holen(e))); // Test Ausgabe Eingabedaten
+      console.log(this.formulardaten_verarbeiten(this.formulardaten_holen(e))); // Test Ausgabe Eingabedaten
       // Formulardaten validieren
       let formulardaten_fehler = this.formulardaten_validieren(formulardaten); // Das ist das Fehler Array
-      // console.log(formulardaten_fehler); // Test Ausgabe Fehler
-      // wenn die Formulardaten valide sind
-          // Eintrag zum Haushaltsbuch hinzufügen
-          // wenn bereits Fehlermeldung angezeigt wird
-              // Fehlermeldung entfernen
-          // Formular zurücksetzen
-          // Datum auf den heutigen Tag setzen
-      // wenn die Formulardaten NICHT valide sind
-          // wenn bereits Fehlermeldung angezeigt wird
-              // Fehlermeldung entfernen
-          // Fehlermeldung im Eingabeformular-Container anzeigen
+      console.log(formulardaten_fehler); // Test Ausgabe Fehler
+      if(formulardaten_fehler.length === 0) { // wenn die Formulardaten valide sind
+        // Eintrag zum Haushaltsbuch hinzufügen
+        haushaltsbuch.eintrag_hinzufuegen(formulardaten);
+        // wenn bereits Fehlermeldung angezeigt wird
+            // Fehlermeldung entfernen
+        // Formular zurücksetzen
+        e.target.reset();
+        // Datum auf den heutigen Tag setzen
+        this.datum_aktualisieren();
+      } else { // wenn die Formulardaten NICHT valide sind
+        // wenn bereits Fehlermeldung angezeigt wird
+            // Fehlermeldung entfernen
+        // Fehlermeldung im Eingabeformular-Container anzeigen
+      }
     });
   },
 
@@ -115,5 +128,6 @@ const eingabeformular = {
 
     document.querySelector("#navigationsleiste").insertAdjacentElement("afterend", this.html_generieren());
     // Datum auf den heutigen Tag setzen
+    this.datum_aktualisieren()
   }
 };
