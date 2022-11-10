@@ -30,6 +30,25 @@ const eingabeformular = {
     }
   },
 
+  // Methode validiert die verarbeiteten Eingabedaten. Sammelt Fehler und gibt diese als Array zurück.
+  formulardaten_validieren(formulardaten) {
+    let fehler = [];
+
+    if(formulardaten.titel === "") {
+      fehler.push("Titel:");
+    }
+    if (formulardaten.typ === undefined || formulardaten.typ.match(/^(?:einnahme|ausgabe)$/) === null) {
+      fehler.push("Typ:");
+    }
+    if(isNaN(formulardaten.betrag)) {
+      fehler.push("Betrag:")
+    }
+    if(formulardaten.datum === null) {
+      fehler.push("Datum:")
+    }
+    return fehler;
+  },
+
   // Methode: Fängt das Submit Event ab am form-Tag ab.
   absenden_event_hinzufuegen(eingabeformular) {
 
@@ -38,7 +57,10 @@ const eingabeformular = {
       // Formulardaten holen. Kommt von obiger Methode formulardaten_holen(e). Dorthin wird e zum Abgreifen geschickt.
       // Formulardaten verarbeiten
       let formulardaten = this.formulardaten_verarbeiten(this.formulardaten_holen(e));
+      // console.log(this.formulardaten_verarbeiten(this.formulardaten_holen(e))); // Test Ausgabe Eingabedaten
       // Formulardaten validieren
+      let formulardaten_fehler = this.formulardaten_validieren(formulardaten); // Das ist das Fehler Array
+      // console.log(formulardaten_fehler); // Test Ausgabe Fehler
       // wenn die Formulardaten valide sind
           // Eintrag zum Haushaltsbuch hinzufügen
           // wenn bereits Fehlermeldung angezeigt wird
@@ -64,7 +86,7 @@ const eingabeformular = {
       <div class="eingabeformular-zeile">
           <div class="titel-typ-eingabe-gruppe">
               <label for="titel">Titel</label>
-              <input type="text" id="titel" form="eingabeformular" name="titel" placeholder="z.B. Einkaufen" size="10" title="Titel des Eintrags">
+              <input type="text" id="titel" form="eingabeformular" name="titel" placeholder="z.B. Einkaufen" size="10" title="Titel des Eintrags" required>
               <input type="radio" id="einnahme" name="typ" value="einnahme" form="eingabeformular" title="Typ des Eintrags">
               <label for="einnahme" title="Typ des Eintrags">Einnahme</label>
               <input type="radio" id="ausgabe" name="typ" value="ausgabe" form="eingabeformular" title="Typ des Eintrags" checked>
@@ -74,9 +96,9 @@ const eingabeformular = {
       <div class="eingabeformular-zeile">
           <div class="betrag-datum-eingabe-gruppe">
               <label for="betrag">Betrag</label>
-              <input type="number" id="betrag" name="betrag" form="eingabeformular" placeholder="z.B. 10,42" size="10" step="0.01" title="Betrag des Eintrags (max. zwei Nachkommastellen, kein €-Zeichen)">
+              <input type="number" id="betrag" name="betrag" form="eingabeformular" placeholder="z.B. 10,42" size="10" step="0.01" title="Betrag des Eintrags (max. zwei Nachkommastellen, kein €-Zeichen)" required>
               <label for="datum">Datum</label>
-              <input type="date" id="datum" name="datum" form="eingabeformular" placeholder="jjjj-mm-tt" size="10" title="Datum des Eintrags (Format: jjjj-mm-tt)">
+              <input type="date" id="datum" name="datum" form="eingabeformular" placeholder="jjjj-mm-tt" size="10" title="Datum des Eintrags (Format: jjjj-mm-tt)" required>
           </div>
       </div>
       <div class="eingabeformular-zeile">
