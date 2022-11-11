@@ -22,6 +22,22 @@ const haushaltsbuch = {
     this.gesamtbilanz_anzeigen();
     },
 
+  //Methode: Löscht einen Eintrag aus UI und eintraege Array:
+  eintrag_entfernen(timestamp) {
+    let start_index;
+    for (let i = 0; i < this.eintraege.length; i++) {
+        if (this.eintraege[i].get("timestamp") === parseInt(timestamp)) {
+            console.log(this.eintraege[i].get("timestamp"));
+            start_index = i;
+            break;
+        }
+    }
+    this.eintraege.splice(start_index, 1);
+    this.eintraege_anzeigen();
+    this.gesamtbilanz_erstellen();
+    this.gesamtbilanz_anzeigen();
+},
+
   // Methode: Einträge nach Datum absteigend sortieren.
   eintraege_sortieren() {
     this.eintraege.sort((eintrag_a, eintrag_b) => { // Arrow
@@ -80,10 +96,19 @@ const haushaltsbuch = {
     icon.setAttribute("class", "fas fa-trash");
     button.insertAdjacentElement("afterbegin", icon);
 
+    this.eintrag_entfernen_event_hinzufuegen(listenpunkt); // Testlog
     // WICHTIG: Den zusammengebauten listenpunkt mit explizitem return zurückgeben:
     return listenpunkt;
   },
 
+  //Methode: Erzeugt ein click-Event und holt den Timestamp aus der variablen listenpunkt
+  eintrag_entfernen_event_hinzufuegen(listenpunkt) {
+
+    listenpunkt.querySelector(".entfernen-button").addEventListener("click", e => {
+      let timestamp = e.target.parentElement.getAttribute("data-eintrag");
+      this.eintrag_entfernen(timestamp);
+    })
+  },
   // Methode: Oben generierte Listenpunkte in <ul> schiessen und diese in <article> schiessen. eintrag erzeugen.
   eintraege_anzeigen() {
 

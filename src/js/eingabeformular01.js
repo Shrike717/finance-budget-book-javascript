@@ -66,10 +66,8 @@ const eingabeformular = {
       // Formulardaten holen. Kommt von obiger Methode formulardaten_holen(e). Dorthin wird e zum Abgreifen geschickt.
       // Formulardaten verarbeiten
       let formulardaten = this.formulardaten_verarbeiten(this.formulardaten_holen(e));
-      console.log(this.formulardaten_verarbeiten(this.formulardaten_holen(e))); // Test Ausgabe Eingabedaten
       // Formulardaten validieren
       let formulardaten_fehler = this.formulardaten_validieren(formulardaten); // Das ist das Fehler Array
-      console.log(formulardaten_fehler); // Test Ausgabe Fehler
       if(formulardaten_fehler.length === 0) { // wenn die Formulardaten valide sind
         // Eintrag zum Haushaltsbuch hinzufügen
         haushaltsbuch.eintrag_hinzufuegen(formulardaten);
