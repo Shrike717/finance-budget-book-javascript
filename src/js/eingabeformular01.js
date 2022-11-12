@@ -15,16 +15,9 @@ const eingabeformular = {
 
   // Methode: Verarbeitet die Roh-Eingabedaten
   formulardaten_verarbeiten(formulardaten) {
-    let typ;
-    if (formulardaten.einnahme === true) {
-      typ = "einnahme";
-    } else if(formulardaten.ausgabe === true) {
-      typ = "ausgabe";
-    }
-
     return {
       titel: formulardaten.titel.trim(),
-      typ: typ,
+      typ: formulardaten.einnahme === true ? "einnahme" : formulardaten.ausgabe === true ? "ausgabe" : null,
       betrag: parseFloat(formulardaten.betrag) * 100,
       datum: formulardaten.datum
     }
@@ -90,15 +83,6 @@ const eingabeformular = {
 
   // Methode: Generiert HTML Fehlerbox
   html_fehlerbox_generieren(formulardaten_fehler) {
-
-    // <div class="fehlerbox">
-      // <span>Es gibt Fehler in folgenden Eingabefeldern:</span>
-      // <ul>
-      //   <li>Titel</li>
-      //   <li>Betrag</li>
-      //   <li>Datum</li>
-      // </ul>
-    // </div>
 
     let fehlerbox = document.createElement("div");
     fehlerbox.setAttribute("class", "fehlerbox");
@@ -173,10 +157,13 @@ const eingabeformular = {
     return eingabeformular;
   },
 
+  // Methode: Injeziert das ganze HTML nach der Navileiste rein.
   anzeigen() {
-
-    document.querySelector("#navigationsleiste").insertAdjacentElement("afterend", this.html_generieren());
-    // Datum auf den heutigen Tag setzen
-    this.datum_aktualisieren()
+    let navigationsleiste = document.querySelector("#navigationsleiste")
+    if(navigationsleiste !== null) {
+      navigationsleiste.insertAdjacentElement("afterend", this.html_generieren());
+      // Datum auf den heutigen Tag setzen
+      this.datum_aktualisieren()
+    }
   }
 };

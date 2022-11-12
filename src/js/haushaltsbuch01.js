@@ -40,14 +40,8 @@ const haushaltsbuch = {
 
   // Methode: Einträge nach Datum absteigend sortieren.
   eintraege_sortieren() {
-    this.eintraege.sort((eintrag_a, eintrag_b) => { // Arrow
-      if (eintrag_a.get("datum") > eintrag_b.get("datum")) {
-          return -1;
-      } else if (eintrag_a.get("datum") < eintrag_b.get("datum")){
-          return 1;
-      } else {
-          return 0;
-        };
+    this.eintraege.sort((eintrag_a, eintrag_b) => {
+      return eintrag_a.get("datum") > eintrag_b.get("datum") ? -1 : eintrag_a.get("datum") < eintrag_b.get("datum") ? 1 : 0;
       });
   },
 
@@ -96,7 +90,7 @@ const haushaltsbuch = {
     icon.setAttribute("class", "fas fa-trash");
     button.insertAdjacentElement("afterbegin", icon);
 
-    this.eintrag_entfernen_event_hinzufuegen(listenpunkt); // Testlog
+    this.eintrag_entfernen_event_hinzufuegen(listenpunkt); // Muss für Löschfunktion hier aufgerufen werden
     // WICHTIG: Den zusammengebauten listenpunkt mit explizitem return zurückgeben:
     return listenpunkt;
   },
