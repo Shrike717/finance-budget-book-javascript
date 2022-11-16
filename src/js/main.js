@@ -1,6 +1,6 @@
 "use strict";
 
+let eingabeformular = new Eingabeformular();
 eingabeformular.anzeigen();
-// haushaltsbuch.eintrag_hinzufuegen();
 
-console.log(haushaltsbuch);
+let haushaltsbuch = new Haushaltsbuch();
