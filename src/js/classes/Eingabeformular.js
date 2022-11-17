@@ -63,60 +63,22 @@ class Eingabeformular {
           if(formulardaten_fehler.length === 0) { // wenn die Formulardaten valide sind
             // Eintrag zum Haushaltsbuch hinzufügen
             haushaltsbuch.eintrag_hinzufuegen(formulardaten); // Bleibt öffentlich. Kein Prefix
-            // wenn bereits Fehlermeldung angezeigt wird
-                // Fehlermeldung entfernen
-            this._fehlerbox_entfernen()
+            // wenn bereits Fehlermeldung angezeigt wird, Fehlermeldung entfernen
+            let bestehende_fehlerbox = document.querySelector(".fehlerbox");
+            if(bestehende_fehlerbox !== null) {
+              bestehende_fehlerbox.remove();
+            }
             // Formular zurücksetzen
             e.target.reset();
             // Datum auf den heutigen Tag setzen
             this._datum_aktualisieren();
           } else { // wenn die Formulardaten NICHT valide sind
-            // wenn bereits Fehlermeldung angezeigt wird
-                // Fehlermeldung entfernen
-            this._fehlerbox_entfernen()
-            // Fehlermeldung im Eingabeformular-Container anzeigen
-            this._fehlerbox_anzeigen(formulardaten_fehler);
+            // Hier wird ein Fehler von der Klasse instanziiert und danach angezeigt.
+            let fehler = new Fehler("Es gibt Fehler in folgenden Eingabefeldern:", formulardaten_fehler);
+            fehler.anzeigen();
           }
         });
     }
-
-    // Methode: Generiert HTML Fehlerbox
-    _html_fehlerbox_generieren(formulardaten_fehler) {
-        let fehlerbox = document.createElement("div");
-        fehlerbox.setAttribute("class", "fehlerbox");
-
-        let fehlertext = document.createElement("span");
-        fehlertext.textContent = "Es gibt Fehler in folgenden Eingabefeldern:";
-        fehlerbox.insertAdjacentElement("afterbegin", fehlertext);
-
-        let fehlerliste = document.createElement("ul");
-        formulardaten_fehler.forEach(fehler => {
-          let fehlerlistenpunkt = document.createElement("li");
-          fehlerlistenpunkt.textContent = fehler;
-          fehlerliste.insertAdjacentElement("beforeend", fehlerlistenpunkt);
-        })
-        fehlerbox.insertAdjacentElement("beforeend", fehlerliste)
-
-        return fehlerbox;
-    }
-
-    //Methode: Zeigt die Fehlerbox an wenn ein Fehler im Array ist
-    _fehlerbox_anzeigen(formulardaten_fehler) {
-        let eingabebox_container = document.querySelector("#eingabeformular-container");
-        if(eingabebox_container !== null) {
-          eingabebox_container.insertAdjacentElement("afterbegin", this._html_fehlerbox_generieren(formulardaten_fehler));
-        }
-    }
-
-    // Methode: Fehlerbox entfernen
-    _fehlerbox_entfernen() {
-        let bestehende_fehlerbox = document.querySelector(".fehlerbox");
-        if(bestehende_fehlerbox !== null) {
-          bestehende_fehlerbox.remove();
-        }
-    }
-
-
 
     // Methode: Kreiert das Eingabeformular und injiziert das HTML
     _html_generieren() {
