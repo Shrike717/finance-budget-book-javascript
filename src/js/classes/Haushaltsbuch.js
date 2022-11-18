@@ -11,13 +11,14 @@ class Haushaltsbuch {
 
     // Methode: Zentral und wichtig deswegen oben
     eintrag_hinzufuegen(formulardaten) {  // Hier wird vom Eintragsformular zugegriffen. Kein Prefix
-        let neuer_eintrag = new Map();
-        neuer_eintrag.set("titel", formulardaten.titel);
-        neuer_eintrag.set("typ", formulardaten.typ);
-        neuer_eintrag.set("betrag", formulardaten.betrag);
-        neuer_eintrag.set("datum", formulardaten.datum);
-        neuer_eintrag.set("timestamp", Date.now());
+        let neuer_eintrag = new Eintrag(
+            formulardaten.titel,
+            formulardaten.typ,
+            formulardaten.betrag,
+            formulardaten.datum
+        );
         this._eintraege.push(neuer_eintrag);
+        console.log(this);
         this._eintraege_sortieren();
         this._eintraege_anzeigen();
         this._gesamtbilanz_erstellen();
@@ -25,10 +26,10 @@ class Haushaltsbuch {
     }
 
     //Methode: Löscht einen Eintrag aus UI und eintraege Array:
-    _eintrag_entfernen(timestamp) {
+    eintrag_entfernen(timestamp) {
         let start_index;
         for (let i = 0; i < this._eintraege.length; i++) {
-            if (this._eintraege[i].get("timestamp") === parseInt(timestamp)) {
+            if (this._eintraege[i].timestamp() === parseInt(timestamp)) {
                 // console.log(this._eintraege[i].get("timestamp")); Test
                 start_index = i;
                 break;
@@ -43,74 +44,18 @@ class Haushaltsbuch {
     // Methode: Einträge nach Datum absteigend sortieren.
     _eintraege_sortieren() {
         this._eintraege.sort((eintrag_a, eintrag_b) => {
-          return eintrag_a.get("datum") > eintrag_b.get("datum") ? -1 : eintrag_a.get("datum") < eintrag_b.get("datum") ? 1 : 0;
+          return eintrag_a.datum() > eintrag_b.datum() ? -1 : eintrag_a.datum() < eintrag_b.datum() ? 1 : 0;
           });
     }
 
-    // Methode: Eintrag als HTML-Listenpunkt mit allen spans darin generieren
-    _html_eintrag_generieren(eintrag) {
-
-        // Listenpunkt anlegen
-        let listenpunkt = document.createElement("li");
-
-        // Ternary um die Klasse zu setzen
-        eintrag.get("typ") === "einnahme" ? listenpunkt.setAttribute("class", "einnahme") : listenpunkt.setAttribute("class", "ausgabe");
-
-        listenpunkt.setAttribute("data-eintrag", eintrag.get("timestamp"));
-
-        // Komplette Span für datum anlegen
-        let datum = document.createElement("span");
-        datum.setAttribute("class", "datum");
-        datum.textContent = eintrag.get("datum").toLocaleDateString("de-DE", {
-          year: "numeric",
-          month: "2-digit",
-          day: "2-digit"
-        })
-        listenpunkt.insertAdjacentElement("afterbegin", datum);
-
-        // Komplette Span für titel anlegen
-        let titel = document.createElement("span");
-        titel.setAttribute("class", "titel");
-        titel.textContent = eintrag.get("titel");
-        datum.insertAdjacentElement("afterend", titel);
-
-        // Komplette Span für betrag anlegen
-        let betrag = document.createElement("span");
-        betrag.setAttribute("class", "betrag");
-        betrag.textContent = `${(eintrag.get("betrag") / 100).toFixed(2).replace(/\./, ",")} €`;
-        titel.insertAdjacentElement("afterend", betrag);
-
-        // button-Element anlegen:
-        let button = document.createElement("button");
-        button.setAttribute("class", "entfernen-button");
-        betrag.insertAdjacentElement("afterend", button);
-
-        // icon-Element anlegen:
-        let icon = document.createElement("i");
-        icon.setAttribute("class", "fas fa-trash");
-        button.insertAdjacentElement("afterbegin", icon);
-
-        this._eintrag_entfernen_event_hinzufuegen(listenpunkt); // Muss für Löschfunktion hier aufgerufen werden
-        // WICHTIG: Den zusammengebauten listenpunkt mit explizitem return zurückgeben:
-        return listenpunkt;
-    }
-
-    //Methode: Erzeugt ein click-Event und holt den Timestamp aus der variablen listenpunkt
-    // Wird bei der Eintragerstellung obben gleich hinzugefügt um späteres Löschen möglich zu machen.
-    _eintrag_entfernen_event_hinzufuegen(listenpunkt) {
-        listenpunkt.querySelector(".entfernen-button").addEventListener("click", e => {
-          let timestamp = e.target.parentElement.getAttribute("data-eintrag");
-          this._eintrag_entfernen(timestamp);
-        })
-    }
-    // Methode: Oben generierte Listenpunkte in <ul> schiessen und diese in <article> schiessen. eintrag erzeugen.
+      // Methode: Oben generierte Listenpunkte in <ul> schiessen und diese in <article> schiessen. eintrag erzeugen.
     _eintraege_anzeigen() {
         // Überprüfen und Löschen von <ul>
         document.querySelectorAll(".monatsliste ul").forEach(eintragsliste => eintragsliste.remove()); //Arrow
 
         // Generieren und Platzieren von <ul> und oben generierten Listenpunkten
         let eintragsliste = document.createElement("ul");
-        this._eintraege.forEach(eintrag => eintragsliste.insertAdjacentElement("beforeend", this._html_eintrag_generieren(eintrag))); //Arrow
+        this._eintraege.forEach(eintrag => eintragsliste.insertAdjacentElement("beforeend", eintrag.html())); //Arrow
         document.querySelector(".monatsliste").insertAdjacentElement("afterbegin", eintragsliste);
     }
 
@@ -122,17 +67,17 @@ class Haushaltsbuch {
         neue_gesamtbilanz.set("bilanz", 0);
 
         this._eintraege.forEach(eintrag => { // Arrow
-            switch (eintrag.get("typ")) {
+            switch (eintrag.typ()) {
                 case "einnahme":
-                    neue_gesamtbilanz.set("einnahmen", neue_gesamtbilanz.get("einnahmen") + eintrag.get("betrag"));
-                    neue_gesamtbilanz.set("bilanz", neue_gesamtbilanz.get("bilanz") + eintrag.get("betrag"));
+                    neue_gesamtbilanz.set("einnahmen", neue_gesamtbilanz.get("einnahmen") + eintrag.betrag());
+                    neue_gesamtbilanz.set("bilanz", neue_gesamtbilanz.get("bilanz") + eintrag.betrag());
                     break;
                 case "ausgabe":
-                    neue_gesamtbilanz.set("ausgaben", neue_gesamtbilanz.get("ausgaben") + eintrag.get("betrag"));
-                    neue_gesamtbilanz.set("bilanz", neue_gesamtbilanz.get("bilanz") - eintrag.get("betrag"))
+                    neue_gesamtbilanz.set("ausgaben", neue_gesamtbilanz.get("ausgaben") + eintrag.betrag());
+                    neue_gesamtbilanz.set("bilanz", neue_gesamtbilanz.get("bilanz") - eintrag.betrag());
                     break;
                 default:
-                    console.log(`Der Typ "${eintrag.get("typ")}" ist nicht bekannt.`);
+                    console.log(`Der Typ "${eintrag.typ()}" ist nicht bekannt.`);
                     break;
               }
         });
