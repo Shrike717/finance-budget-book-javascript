@@ -26,14 +26,18 @@ class Monatslistensammlung {
             }
             // Wenn keine Monatsliste: Eine neue wird angelegt
             if(monatsliste_vorhanden = false) { // Ich kann auch schreiben !monatsliste_vorhanden
-              this._monatsliste_hinzufuegen();
+              this._monatsliste_hinzufuegen(eintragsjahr, eintragsmonat, eintrag);
             }
         })
     }
 
-    _monatsliste_hinzufuegen() {
-
-
+    _monatsliste_hinzufuegen(jahr, monat, eintrag) {
+        // Neue Monatsliste instanziieren
+        let neue_monatsliste = new Monatsliste(monat, jahr);
+        // Eintrag zu neuer Monatsliste hinzufügen
+        neue_monatsliste.eintrag_hinzufuegen(eintrag);
+        // Neue Monatsliste zu monatslistensammlung hinzufügen
+        this._monatslisten.push(neue_monatsliste);
     }
 
     _html_generieren() {
