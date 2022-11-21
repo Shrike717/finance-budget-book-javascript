@@ -18,9 +18,7 @@ class Haushaltsbuch {
             formulardaten.datum
         );
         this._eintraege.push(neuer_eintrag);
-        console.log(this);
-        this._eintraege_sortieren();
-        this._eintraege_anzeigen();
+        this._monatslistensammlung.eintrag_hinzufuegen(neuer_eintrag);
         this._gesamtbilanz.aktualisieren(this._eintraege); // Ruft Methode aus Klasse Gesamtbilanz uund übergibt Array
     }
 
@@ -35,28 +33,12 @@ class Haushaltsbuch {
             }
         }
         this._eintraege.splice(start_index, 1);
-        this._eintraege_anzeigen();
         this._gesamtbilanz.aktualisieren(this._eintraege); // Ruft Methode aus Klasse Gesatbilanz
     }
 
-    // Methode: Einträge nach Datum absteigend sortieren.
-    _eintraege_sortieren() {
-        this._eintraege.sort((eintrag_a, eintrag_b) => {
-          return eintrag_a.datum() > eintrag_b.datum() ? -1 : eintrag_a.datum() < eintrag_b.datum() ? 1 : 0;
-          });
+
+    anzeigen(){
+        this._monatslistensammlung.anzeigen();
+        this._gesamtbilanz.anzeigen();
     }
-
-      // Methode: Oben generierte Listenpunkte in <ul> schiessen und diese in <article> schiessen. eintrag erzeugen.
-    _eintraege_anzeigen() {
-        // Überprüfen und Löschen von <ul>
-        document.querySelectorAll(".monatsliste ul").forEach(eintragsliste => eintragsliste.remove()); //Arrow
-
-        // Generieren und Platzieren von <ul> und oben generierten Listenpunkten
-        let eintragsliste = document.createElement("ul");
-        this._eintraege.forEach(eintrag => eintragsliste.insertAdjacentElement("beforeend", eintrag.html())); //Arrow
-        document.querySelector(".monatsliste").insertAdjacentElement("afterbegin", eintragsliste);
-    }
-
-
-
 }

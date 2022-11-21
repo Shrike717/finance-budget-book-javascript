@@ -8,10 +8,9 @@ class Gesamtbilanz {
         this._ausgaben = 0;
         this._bilanz = 0;
         this._html = this._html_generieren();
-        this._anzeigen()
     }
 
-    // Methode: Gesamtbilanz erstellen verrechnet die Einträge jeweils mit der Gesamtbilanz:
+    // Methode: aktualisieren verrechnet die Einträge jeweils mit der Gesamtbilanz:
     aktualisieren(eintraege) {
         this._einnahmen = 0;
         this._ausgaben = 0;
@@ -32,7 +31,7 @@ class Gesamtbilanz {
               }
         });
         this._html = this._html_generieren();
-        this._anzeigen();
+        this.anzeigen();
   }
 
       // Methode: Erzeugt das ganze HTML-Element <aside> mit den Werten für die Gesamtbilanz.
@@ -87,7 +86,7 @@ class Gesamtbilanz {
   }
 
     // Zeigt nach Prüfung und Löschung der evt. vorhandenen alter Gesamtbilanz die Gesamtbilanz an der richtigen Stelle im HTML:
-    _anzeigen() {
+    anzeigen() {
         // Prüfen und Löschen von evtl. vorhandener Gesamtbilanz
        let gesamtbilanz =  document.querySelector("#gesamtbilanz");
        if(gesamtbilanz !== null) {
