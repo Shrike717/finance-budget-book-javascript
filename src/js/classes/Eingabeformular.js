@@ -118,9 +118,9 @@ class Eingabeformular {
 
     // Methode: Injeziert das ganze HTML nach der Navileiste rein.
     anzeigen() {
-        let navigationsleiste = document.querySelector("body")
+        let navigationsleiste = document.querySelector("#navigationsleiste")
         if(navigationsleiste !== null) {
-          navigationsleiste.insertAdjacentElement("afterbegin", this._html);
+          navigationsleiste.insertAdjacentElement("afterend", this._html);
           // Datum auf den heutigen Tag setzen
           this._datum_aktualisieren()
         }

@@ -2,7 +2,7 @@
 
 class Monatsliste {
 
-    constructor(jahr, monat, ) {
+    constructor(jahr, monat) {
         this._jahr = jahr;
         this._monat = monat;
         this._eintraege = [];
@@ -11,23 +11,24 @@ class Monatsliste {
     }
 
     monat() {
-        return this._monat
+        return this._monat;
     }
 
     jahr() {
-        return this._jahr
+        return this._jahr;
     }
 
     bilanz() {
-      return this._bilanz
+      return this._bilanz;
     }
 
     html() {
-      return this._html
+      return this._html;
     }
 
     eintrag_hinzufuegen(eintrag) {
         this._eintraege.push(eintrag);
+        this._aktualisieren();
     }
 
     //   // Methode: Einträge nach Datum absteigend sortieren.
@@ -52,24 +53,29 @@ class Monatsliste {
         ueberschrift.insertAdjacentElement("afterbegin", monat_jahr);
 
         let monatsbilanz = document.createElement("span");
-        monatsbilanz.setAttribute("class", "monatsbilanz");
+        // monatsbilanz.setAttribute("class", "monatsbilanz");
         if(this._bilanz >= 0) {
             monatsbilanz.setAttribute("class", "monatsbilanz positiv");
         } else {
           monatsbilanz.setAttribute("class", "monatsbilanz negativ");
         }
-        monatsbilanz.textContent = `${this.bilanz()} €`;
-
-        ueberschrift.insertAdjacentElement("beforend", monatsbilanz);
+        monatsbilanz.textContent = `${this._bilanz} €`;
+        ueberschrift.insertAdjacentElement("beforeend", monatsbilanz);
 
         monatsliste.insertAdjacentElement("afterbegin", ueberschrift);
 
         // Generieren und Platzieren von <ul> und oben generierten Listenpunkten
         let eintragsliste = document.createElement("ul");
-        this._eintraege.forEach(eintrag => eintragsliste.insertAdjacentElement("beforeend", eintrag.html()));
+        this._eintraege.forEach(eintrag => {
+          eintragsliste.insertAdjacentElement("beforeend", eintrag.html())
+        });
         monatsliste.insertAdjacentElement("beforeend", eintragsliste);
 
         return monatsliste;
+    }
+
+    _aktualisieren() {
+        this._html = this._html_generieren();
     }
 
 }
