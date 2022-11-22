@@ -11,15 +11,19 @@ class Monatsliste {
     }
 
     monat() {
-        this._monat = monat;
+        return this._monat
     }
 
     jahr() {
-        this._jahr = jahr;
+        return this._jahr
     }
 
     bilanz() {
-      this._bilanz = 0;
+      return this._bilanz
+    }
+
+    html() {
+      return this._html
     }
 
     eintrag_hinzufuegen(eintrag) {
@@ -32,19 +36,6 @@ class Monatsliste {
     //       return eintrag_a.datum() > eintrag_b.datum() ? -1 : eintrag_a.datum() < eintrag_b.datum() ? 1 : 0;
     //       });
     // }
-
-    /*
-    <article class="monatsliste">
-    <h2>
-        <span class="monat-jahr">Februar 2020</span>
-        <span class="monatsbilanz negativ">-326,84€</span>
-    </h2>
-    <ul>
-        <li></li>
-        <li></li>
-    </ul>
-    </article>
-    */
 
     _html_generieren() {
         let monatsliste = document.createElement("article");

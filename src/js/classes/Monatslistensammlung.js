@@ -14,8 +14,8 @@ class Monatslistensammlung {
 
     eintrag_hinzufuegen(eintrag) {
         // Werte für Monat und Jahr holen
-        let eintragsmonat = eintrag.date().toLocaleString("de-De", {month: "numeric"});
-        let eintragsjahr = eintrag.date().toLocaleString("de-De", {year: "numeric"});
+        let eintragsmonat = eintrag.datum().toLocaleString("de-De", {month: "numeric"});
+        let eintragsjahr = eintrag.datum().toLocaleString("de-De", {year: "numeric"});
         // Prüfen, ob Monatsliste schon vorhanden ist
         let monatsliste_vorhanden = false;
         this._monatslisten.forEach(monatsliste => {
@@ -41,11 +41,25 @@ class Monatslistensammlung {
     }
 
     _html_generieren() {
+        let monatslisten = document.createElement("section");
+        monatslisten.setAttribute("id", "monatslisten");
 
+        this._monatslisten.forEach(monatsliste => {
+            monatslisten.insertAdjacentElement("beforeend",  monatsliste.html());
+        })
+
+        return monatslisten;
     }
 
     anzeigen() {
+      let eingabeformular_container = document.querySelector("#eingabeformular-container");
+      let monatslistensammlung = document.querySelector("#monatslisten");
 
-
+      if(eingabeformular_container !== null) {
+          if(monatslistensammlung !== null) {
+            monatslistensammlung.remove();
+          }
+          eingabeformular_container.insertAdjacentElement("afterend", this._html);
+      }
     }
 }
