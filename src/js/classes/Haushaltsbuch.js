@@ -4,7 +4,7 @@ class Haushaltsbuch {
 
     constructor() {
       this._eintraege = [];
-      this.monatslistensammlung = new Monatslistensammlung(); // Initialisierung mit Instanz
+      this._monatslistensammlung = new Monatslistensammlung(); // Initialisierung mit Instanz
       this._gesamtbilanz = new Gesamtbilanz(); // Initialisierung mit Instanz
     }
 
