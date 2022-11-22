@@ -31,12 +31,22 @@ class Monatsliste {
         this._aktualisieren();
     }
 
-    //   // Methode: Einträge nach Datum absteigend sortieren.
-    //   _eintraege_sortieren() {
-    //     this._eintraege.sort((eintrag_a, eintrag_b) => {
-    //       return eintrag_a.datum() > eintrag_b.datum() ? -1 : eintrag_a.datum() < eintrag_b.datum() ? 1 : 0;
-    //       });
-    // }
+    // Methode: Einträge nach Datum absteigend sortieren.
+    _eintraege_sortieren() {
+      this._eintraege.sort((eintrag_a, eintrag_b) => {
+          if (eintrag_a.datum() > eintrag_b.datum()) {
+              return -1;
+          } else if (eintrag_a.datum() < eintrag_b.datum()) {
+              return 1;
+          } else {
+              if (eintrag_a.timestamp() > eintrag_b.timestamp()) {
+                  return -1;
+              } else {
+                  return 1;
+              }
+          }
+      });
+    }
 
     _html_generieren() {
         let monatsliste = document.createElement("article");
@@ -75,6 +85,7 @@ class Monatsliste {
     }
 
     _aktualisieren() {
+        this._eintraege_sortieren();
         this._html = this._html_generieren();
     }
 
