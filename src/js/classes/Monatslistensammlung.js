@@ -25,8 +25,8 @@ class Monatslistensammlung {
                 monatsliste.eintrag_hinzufuegen(eintrag);
                 monatsliste_vorhanden = true;
             }
-            // Wenn keine Monatsliste: Eine neue wird angelegt
         });
+        // Wenn keine Monatsliste: Eine neue wird angelegt
         if(!monatsliste_vorhanden) { // Ich kann auch schreiben !monatsliste_vorhanden
           this._monatsliste_hinzufuegen(eintragsjahr, eintragsmonat, eintrag);
         }
@@ -42,6 +42,21 @@ class Monatslistensammlung {
         this._monatslisten.push(neue_monatsliste);
     }
 
+    _monatslisten_sortieren() {
+        this._monatslisten.sort((monatsliste_a, monatsliste_b) => {
+            if (monatsliste_a.jahr() < monatsliste_b.jahr()) {
+                return 1;
+            } else if (monatsliste_a.jahr() > monatsliste_b.jahr()) {
+                return -1;
+            } else {
+                if (monatsliste_a.monat() < monatsliste_b.monat()) {
+                    return 1;
+                } else {
+                    return -1;
+            }
+        }})
+    }
+
     _html_generieren() {
         let monatslisten = document.createElement("section");
         monatslisten.setAttribute("id", "monatslisten");
@@ -54,6 +69,7 @@ class Monatslistensammlung {
     }
 
     _aktualisieren() {
+        this._monatslisten_sortieren();
         this._html = this._html_generieren(); // Generiert das HTML neu
         this.anzeigen(); // Und zeigt es danach neu an.
     }
