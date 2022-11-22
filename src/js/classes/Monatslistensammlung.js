@@ -16,24 +16,26 @@ class Monatslistensammlung {
         // Werte für Monat und Jahr holen
         let eintragsmonat = eintrag.datum().toLocaleString("de-De", {month: "numeric"});
         let eintragsjahr = eintrag.datum().toLocaleString("de-De", {year: "numeric"});
+
         // Prüfen, ob Monatsliste schon vorhanden ist
         let monatsliste_vorhanden = false;
         this._monatslisten.forEach(monatsliste => {
-            if(eintragsmonat === monatsliste.monat() && eintragsjahr === monatsliste.jahr()) {
+            if (eintragsmonat === monatsliste.monat() && eintragsjahr === monatsliste.jahr()) {
               // Eintrag wird dem Array in schon vorhandene Monatsliste.js hinzugefügt
-              monatsliste.eintrag_hinzufuegen(eintrag);
-              monatsliste_vorhanden = true;
+                monatsliste.eintrag_hinzufuegen(eintrag);
+                monatsliste_vorhanden = true;
             }
             // Wenn keine Monatsliste: Eine neue wird angelegt
-            if(monatsliste_vorhanden = false) { // Ich kann auch schreiben !monatsliste_vorhanden
-              this._monatsliste_hinzufuegen(eintragsjahr, eintragsmonat, eintrag);
-            }
-        })
+        });
+        if(!monatsliste_vorhanden) { // Ich kann auch schreiben !monatsliste_vorhanden
+          this._monatsliste_hinzufuegen(eintragsjahr, eintragsmonat, eintrag);
+        }
+        this._aktualisieren();
     }
 
     _monatsliste_hinzufuegen(jahr, monat, eintrag) {
         // Neue Monatsliste instanziieren
-        let neue_monatsliste = new Monatsliste(monat, jahr);
+        let neue_monatsliste = new Monatsliste(jahr, monat);
         // Eintrag zu neuer Monatsliste hinzufügen
         neue_monatsliste.eintrag_hinzufuegen(eintrag);
         // Neue Monatsliste zu monatslistensammlung hinzufügen
@@ -45,10 +47,15 @@ class Monatslistensammlung {
         monatslisten.setAttribute("id", "monatslisten");
 
         this._monatslisten.forEach(monatsliste => {
-            monatslisten.insertAdjacentElement("beforeend",  monatsliste.html());
+            monatslisten.insertAdjacentElement("beforeend", monatsliste.html());
         })
 
         return monatslisten;
+    }
+
+    _aktualisieren() {
+        this._html = this._html_generieren(); // Generiert das HTML neu
+        this.anzeigen(); // Und zeigt es danach neu an.
     }
 
     anzeigen() {
