@@ -18,7 +18,7 @@ class Haushaltsbuch {
             formulardaten.datum
         );
         this._eintraege.push(neuer_eintrag);
-        this._monatslistensammlung.eintrag_hinzufuegen(neuer_eintrag);
+        this._monatslistensammlung.aktualisieren(this._eintraege);
         this._gesamtbilanz.aktualisieren(this._eintraege); // Ruft Methode aus Klasse Gesamtbilanz uund übergibt Array
     }
 
@@ -27,12 +27,12 @@ class Haushaltsbuch {
         let start_index;
         for (let i = 0; i < this._eintraege.length; i++) {
             if (this._eintraege[i].timestamp() === parseInt(timestamp)) {
-                // console.log(this._eintraege[i].get("timestamp")); Test
                 start_index = i;
                 break;
             }
         }
         this._eintraege.splice(start_index, 1);
+        this._monatslistensammlung.aktualisieren(this._eintraege);
         this._gesamtbilanz.aktualisieren(this._eintraege); // Ruft Methode aus Klasse Gesatbilanz
     }
 

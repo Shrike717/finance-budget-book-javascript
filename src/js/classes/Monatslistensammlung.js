@@ -12,7 +12,7 @@ class Monatslistensammlung {
         this._html = this._html_generieren();
     }
 
-    eintrag_hinzufuegen(eintrag) {
+    _eintrag_hinzufuegen(eintrag) {
         // Werte für Monat und Jahr holen
         let eintragsmonat = eintrag.datum().toLocaleString("de-De", {month: "numeric"});
         let eintragsjahr = eintrag.datum().toLocaleString("de-De", {year: "numeric"});
@@ -30,7 +30,6 @@ class Monatslistensammlung {
         if(!monatsliste_vorhanden) { // Ich kann auch schreiben !monatsliste_vorhanden
           this._monatsliste_hinzufuegen(eintragsjahr, eintragsmonat, eintrag);
         }
-        this._aktualisieren();
     }
 
     _monatsliste_hinzufuegen(jahr, monat, eintrag) {
@@ -68,7 +67,9 @@ class Monatslistensammlung {
         return monatslisten;
     }
 
-    _aktualisieren() {
+    aktualisieren(eintraege) {
+        this._monatslisten = [];
+        eintraege.forEach(eintrag => {this._eintrag_hinzufuegen(eintrag)});
         this._monatslisten_sortieren();
         this._html = this._html_generieren(); // Generiert das HTML neu
         this.anzeigen(); // Und zeigt es danach neu an.
