@@ -31,7 +31,6 @@ class Monatsliste {
         this._aktualisieren();
     }
 
-    // Methode: Einträge nach Datum absteigend sortieren.
     _eintraege_sortieren() {
       this._eintraege.sort((eintrag_a, eintrag_b) => {
           if (eintrag_a.datum() > eintrag_b.datum()) {
@@ -75,7 +74,6 @@ class Monatsliste {
         ueberschrift.insertAdjacentElement("afterbegin", monat_jahr);
 
         let monatsbilanz = document.createElement("span");
-        // monatsbilanz.setAttribute("class", "monatsbilanz");
         if(this._bilanz >= 0) {
             monatsbilanz.setAttribute("class", "monatsbilanz positiv");
         } else {
@@ -86,7 +84,6 @@ class Monatsliste {
 
         monatsliste.insertAdjacentElement("afterbegin", ueberschrift);
 
-        // Generieren und Platzieren von <ul> und oben generierten Listenpunkten
         let eintragsliste = document.createElement("ul");
         this._eintraege.forEach(eintrag => {
           eintragsliste.insertAdjacentElement("beforeend", eintrag.html())

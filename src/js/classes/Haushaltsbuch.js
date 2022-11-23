@@ -4,8 +4,11 @@ class Haushaltsbuch {
 
     constructor() {
       this._eintraege = [];
+      this._navigationsleiste = new Navigationsleiste(); // Initialisierung mit Instanz
+      this._eingabeformular = new Eingabeformular(); // Initialisierung mit Instanz
       this._monatslistensammlung = new Monatslistensammlung(); // Initialisierung mit Instanz
       this._gesamtbilanz = new Gesamtbilanz(); // Initialisierung mit Instanz
+      console.log(this);
     }
 
 
@@ -37,7 +40,9 @@ class Haushaltsbuch {
     }
 
 
-    anzeigen(){
+    start(){
+        this._navigationsleiste.anzeigen();
+        this._eingabeformular.anzeigen();
         this._monatslistensammlung.anzeigen();
         this._gesamtbilanz.anzeigen();
     }

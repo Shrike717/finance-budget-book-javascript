@@ -1,10 +1,5 @@
 "use strict";
 
-/*
-<section id="monatslisten">
-</section>
-*/
-
 class Monatslistensammlung {
 
     constructor() {
@@ -27,7 +22,7 @@ class Monatslistensammlung {
             }
         });
         // Wenn keine Monatsliste: Eine neue wird angelegt
-        if(!monatsliste_vorhanden) { // Ich kann auch schreiben !monatsliste_vorhanden
+        if(!monatsliste_vorhanden) {
           this._monatsliste_hinzufuegen(eintragsjahr, eintragsmonat, eintrag);
         }
     }
@@ -71,8 +66,8 @@ class Monatslistensammlung {
         this._monatslisten = [];
         eintraege.forEach(eintrag => {this._eintrag_hinzufuegen(eintrag)});
         this._monatslisten_sortieren();
-        this._html = this._html_generieren(); // Generiert das HTML neu
-        this.anzeigen(); // Und zeigt es danach neu an.
+        this._html = this._html_generieren();
+        this.anzeigen();
     }
 
     anzeigen() {
