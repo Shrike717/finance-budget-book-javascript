@@ -93,7 +93,7 @@ class Gesamtbilanz {
           gesamtbilanz.remove();
        }
        // Neue Gesamtbilanz im Frontend an richtiger Stelle anzeigen (html_gesamtbilanz_generieren())
-       document.querySelector("nav").insertAdjacentElement("afterend", this._html);
+       document.querySelector("body").insertAdjacentElement("afterbegin", this._html);
     }
 
 }

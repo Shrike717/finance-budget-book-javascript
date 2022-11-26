@@ -8,21 +8,21 @@ class Haushaltsbuch {
       this._eingabeformular = new Eingabeformular(); // Initialisierung mit Instanz
       this._monatslistensammlung = new Monatslistensammlung(); // Initialisierung mit Instanz
       this._gesamtbilanz = new Gesamtbilanz(); // Initialisierung mit Instanz
-      console.log(this);
+      this._wiederherstellen();
     }
 
-
     // Methode: Zentral und wichtig deswegen oben
-    eintrag_hinzufuegen(formulardaten) {  // Hier wird vom Eintragsformular zugegriffen. Kein Prefix
+    eintrag_hinzufuegen(eintragsdaten) {  // Hier wird vom Eintragsformular zugegriffen. Kein Prefix
         let neuer_eintrag = new Eintrag(
-            formulardaten.titel,
-            formulardaten.typ,
-            formulardaten.betrag,
-            formulardaten.datum
+            eintragsdaten.titel,
+            eintragsdaten.typ,
+            eintragsdaten.betrag,
+            eintragsdaten.datum
         );
         this._eintraege.push(neuer_eintrag);
         this._monatslistensammlung.aktualisieren(this._eintraege);
         this._gesamtbilanz.aktualisieren(this._eintraege); // Ruft Methode aus Klasse Gesamtbilanz uund übergibt Array
+        this._speichern();
     }
 
     //Methode: Löscht einen Eintrag aus UI und eintraege Array:
@@ -37,8 +37,26 @@ class Haushaltsbuch {
         this._eintraege.splice(start_index, 1);
         this._monatslistensammlung.aktualisieren(this._eintraege);
         this._gesamtbilanz.aktualisieren(this._eintraege); // Ruft Methode aus Klasse Gesatbilanz
+        this._speichern();
     }
 
+    _speichern() {
+        localStorage.setItem("eintraege", JSON.stringify(this._eintraege));
+    }
+
+    _wiederherstellen() {
+        let gespeicherte_eintraege = localStorage.getItem("eintraege");
+        if (gespeicherte_eintraege !== null) {
+            JSON.parse(gespeicherte_eintraege).forEach(eintrag => {
+                this.eintrag_hinzufuegen({
+                    titel: eintrag._titel,
+                    typ: eintrag._typ,
+                    betrag: eintrag._betrag,
+                    datum: new Date(eintrag._datum)
+                });
+            });
+        }
+    }
 
     start(){
         this._navigationsleiste.anzeigen();

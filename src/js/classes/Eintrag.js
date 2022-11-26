@@ -38,7 +38,6 @@ class Eintrag {
 
      // Methode: Eintrag als HTML-Listenpunkt mit allen spans darin generieren
     _html_generieren() {
-
         // Listenpunkt anlegen
         let listenpunkt = document.createElement("li");
 
