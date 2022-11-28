@@ -1,6 +1,6 @@
-"use strict";
+import haushaltsbuch from "./../main.js";
 
-class Eintrag {
+export default class Eintrag {
 
     constructor(titel, typ, betrag, datum) {
 
