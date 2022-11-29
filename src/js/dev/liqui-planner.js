@@ -1,7 +1,7 @@
 /**
- * Das Hauptmodul "main" ist für die Instanziierung des Haushaltsbuchs und den
+ * Das Hauptmodul "liqui-planner" ist für die Instanziierung des Haushaltsbuchs und den
  * Start der Anwendung zuständig.
- * @module main
+ * @module liqui-planner
  */
 
 import Haushaltsbuch from "./classes/Haushaltsbuch.js";
