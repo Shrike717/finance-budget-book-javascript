@@ -7,10 +7,10 @@
  * Die Klasse "Fehlerbox" stellt alle Eigenschaften
  * und Methoden der Fehlerbox im Eingabeformular (inkl. HTML) zur Verfügung.
  */
-export default class Fehler {
+export default class Fehlerbox {
 
     /**
-     * Der Konstruktor generiert bei Instanziierung der Klasse "Fehler"
+     * Der Konstruktor generiert bei Instanziierung der Klasse "Fehlerbox"
      * das HTML einer Fehlerbox anhand der u.g. Parameter und Eigenschaften.
      * @param {String} fehlertext - Einleitungstext der Fehlerbox
      * @param {Array} formular_fehler - Array mit den Namen ("Titel", "Typ", "Betrag" oder "Datum")

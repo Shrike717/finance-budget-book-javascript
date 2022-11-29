@@ -9,7 +9,7 @@ import Haushaltsbuch from "./classes/Haushaltsbuch.js";
 /**
  * Instanziierung des Haushaltsbuchs und Start der Anwendung.
  */
-let haushaltsbuch = new Haushaltsbuch();
-haushaltsbuch.start();
+let liqui_planner = new Haushaltsbuch();
+liqui_planner.start();
 
-export default haushaltsbuch;
+export default liqui_planner;

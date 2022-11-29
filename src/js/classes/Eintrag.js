@@ -3,7 +3,7 @@
  * @module classes/Eintrag
  */
 
-import haushaltsbuch from "./../main.js";
+import liqui_planner from "../liqui-planner.js";
 
 /**
  * Die Klasse "Eintrag" stellt alle Eigenschaften
@@ -85,13 +85,13 @@ export default class Eintrag {
     /**
      * Diese private Methode definiert das Click-Event für den Eintrag-Entfernen-Button
      * der Eintragselemente und löst damit das Entfernen eines Eintrags aus dem
-     * Haushaltsbuch aus. Sie wird in this._html_generieren() genutzt.
+     * liqui_planner aus. Sie wird in this._html_generieren() genutzt.
      * @param {Element} listenpunkt
      */
     _eintrag_entfernen_event_hinzufuegen(listenpunkt) {
       listenpunkt.querySelector(".entfernen-button").addEventListener("click", e => {
         let timestamp = e.target.parentElement.getAttribute("data-eintrag");
-        haushaltsbuch.eintrag_entfernen(timestamp);
+        liqui_planner.eintrag_entfernen(timestamp);
       })
     }
 
