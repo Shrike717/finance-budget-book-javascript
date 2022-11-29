@@ -3,8 +3,8 @@
  * @module classes/Eingabeformular
  */
 
-import Fehler from "./Fehler.js";
-import haushaltsbuch from "./../main.js"
+import Fehlerbox from "./Fehlerbox.js";
+import liqui_planner from "../liqui-planner.js"
 
 export default class Eingabeformular {
 
@@ -66,7 +66,7 @@ export default class Eingabeformular {
 
      /**
      * Diese private Methode aktualisiert das Datum des Date-Inputs im Eingabeformular (z.B. beim öffnen der Seite
-     * oder nach erfolgreichem Hinzufügen eines Eintrags zum Haushaltsbuch) und wird dementsprechend in
+     * oder nach erfolgreichem Hinzufügen eines Eintrags zum Haushaltsbuch ) und wird dementsprechend in
      * this._absenden_event_hinzufuegen() und this._html_generieren() genutzt.
      */
     _datum_aktualisieren() {
@@ -87,7 +87,7 @@ export default class Eingabeformular {
             let formulardaten = this._formulardaten_verarbeiten(this._formulardaten_holen(e));
             let formulardaten_fehler = this._formulardaten_validieren(formulardaten);
             if(formulardaten_fehler.length === 0) {
-                haushaltsbuch.eintrag_hinzufuegen(formulardaten);
+                liqui_planner.eintrag_hinzufuegen(formulardaten);
                 let bestehende_fehlerbox = document.querySelector(".fehlerbox");
                     if(bestehende_fehlerbox !== null) {
                         bestehende_fehlerbox.remove();
@@ -95,7 +95,7 @@ export default class Eingabeformular {
               e.target.reset();
               this._datum_aktualisieren();
             } else {
-                let fehler = new Fehler("Es gibt Fehler in folgenden Eingabefeldern:", formulardaten_fehler);
+                let fehler = new Fehlerbox("Es gibt Fehler in folgenden Eingabefeldern:", formulardaten_fehler);
                 fehler.anzeigen();
             }
         });
@@ -126,9 +126,9 @@ export default class Eingabeformular {
             <div class="eingabeformular-zeile">
                 <div class="betrag-datum-eingabe-gruppe">
                     <label for="betrag">Betrag</label>
-                    <input type="number" id="betrag" name="betrag" form="eingabeformular" placeholder="z.B. 10,42" size="10" step="0.01" title="Betrag des Eintrags (max. zwei Nachkommastellen, kein €-Zeichen)" required>
+                    <input type="number" id="betrag" name="betrag" form="eingabeformular" placeholder="z.B. 10,42" size="10" step="0.01" min="0.01" title="Betrag des Eintrags (max. zwei Nachkommastellen, kein €-Zeichen)" required>
                     <label for="datum">Datum</label>
-                    <input type="date" id="datum" name="datum" form="eingabeformular" placeholder="jjjj-mm-tt" size="10" title="Datum des Eintrags (Format: jjjj-mm-tt)" required>
+                    <input type="date" id="datum" name="datum" form="eingabeformular" title="Datum des Eintrags" required>
                 </div>
             </div>
             <div class="eingabeformular-zeile">
