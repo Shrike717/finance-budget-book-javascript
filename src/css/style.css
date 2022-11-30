@@ -125,10 +125,10 @@ h6 {
 }
 
 #markenname {
-    font-size: 5rem;
+    font-size: 3.6rem;
     text-transform: uppercase;
-    color: #fff;
-    font-family: "Amatic SC", cursive;
+    font-family: "Oswald", Helvetica, sans-serif;
+    color: #e9ecef;
     line-height: inherit;
     vertical-align: bottom;
 }
@@ -459,10 +459,10 @@ button.standard:focus {
     grid-area: gesamtbilanz-bereich;
     padding: 3rem 3rem;
     background-color: #e9ecef;
-    border-top-left-radius: 1.5rem;
-    border-bottom-left-radius: 1.5rem;
     -ms-grid-row-align: start;
     align-self: start;
+    margin-right: 2rem;
+    border-radius: 1.5rem;
 }
 
 #gesamtbilanz>.gesamtbilanz-zeile {
