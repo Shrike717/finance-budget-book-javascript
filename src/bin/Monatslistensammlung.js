@@ -33,9 +33,6 @@ export default class Monatslistensammlung {
      */
     _eintrag_hinzufuegen(eintrag) {
         let eintragsmonat = eintrag.datum().toLocaleString("de-De", {month: "numeric"});
-        if (parseInt(eintragsmonat) < 10) {
-            eintragsmonat = `0${eintragsmonat}`;
-        }
         let eintragsjahr = eintrag.datum().toLocaleString("de-De", {year: "numeric"});
         let monatsliste_vorhanden = false;
         this._monatslisten.forEach(monatsliste => {
