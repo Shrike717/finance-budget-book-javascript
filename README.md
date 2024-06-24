@@ -23,4 +23,4 @@ The "Budget Book" app is a comprehensive tool for monitoring income and expenses
 
 ## Course Link
 The project was created using the following course:  
-[03. JavaScript - The Ultimate JavaScript Mastery Course - Udemy | Ruben Winkler](https://www.udemy.com/course/der-ultimative-javascript-komplettkurs/learn/lecture/10368794?start=0#overview)
+[Der ultimative JavaScript Komplettkurs | Ruben Winkler](https://www.udemy.com/course/der-ultimative-javascript-komplettkurs/learn/lecture/10368794?start=0#overview)
